@@ -1,0 +1,15 @@
+
+1.跳转
+startActivity(Intent(MainActivity@this, SecondActivity::class.java))
+
+style="@style/TextAppearance.AppCompat.Display4"
+style="@style/TextAppearance.AppCompat.Display3"
+style="@style/TextAppearance.AppCompat.Display2"
+style="@style/TextAppearance.AppCompat.Display1"
+style="@style/TextAppearance.AppCompat.Headline"
+style="@style/TextAppearance.AppCompat.Title"
+style="@style/TextAppearance.AppCompat.Subhead"
+style="@style/TextAppearance.AppCompat.Body2"
+style="@style/TextAppearance.AppCompat.Body1"
+style="@style/TextAppearance.AppCompat.Caption"
+style="@style/TextAppearance.AppCompat.Button"

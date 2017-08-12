@@ -1,12 +1,16 @@
 package com.damon43.polycloudmusic
 
-import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import com.damon43.common.base.BaseActivity
-
+import org.jetbrains.anko.find
 
 class MainActivity : BaseActivity() {
-    override fun initView() {
 
+    var mToolBar : Toolbar ? = null
+
+    override fun initView() {
+        mToolBar = find(R.id.tb_main)
+        mToolBar?.inflateMenu(R.menu.main_menu)
     }
 
     override fun initPresenter() {
@@ -15,11 +19,5 @@ class MainActivity : BaseActivity() {
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
 
 }

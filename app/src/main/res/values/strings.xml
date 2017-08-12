@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PolyCloudMusic</string>
+    <string name="itemsearch">搜索</string>
+    <string name="itemnight">夜间模式</string>
 </resources>
