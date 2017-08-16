@@ -21,13 +21,13 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     public RxManager rxManager;
-    protected Unbinder unbinder;
+//    protected Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        unbinder = ButterKnife.bind(this); //依赖注入
+//        unbinder = ButterKnife.bind(this); //依赖注入
         rxManager = new RxManager();
         initPresenter();
         initView();
@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onDestroy() {
         rxManager.clear();
-        unbinder.unbind();
+//        unbinder.unbind();
         super.onDestroy();
     }
 
