@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_left"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start|left"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <ImageView
+            android:id="@+id/ivSongPic"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@color/accent"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tvSongName"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="@dimen/padding_margin_25dp"
+            android:layout_marginLeft="@dimen/padding_margin_10dp"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tvSongAuthor"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="@dimen/padding_margin_5dp"
+            android:layout_marginLeft="@dimen/padding_margin_10dp"
+            android:text="@string/app_name" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvLibrary"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/bylibrary"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvPlayList"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvPlayList"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvFolders"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvFolders"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvPlayQueue"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvPlayQueue"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvPlaying"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvPlaying"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/gary" />
+
+    <TextView
+        android:id="@+id/tvSetting"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvSetting"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvAbout"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_menu_item_bg"
+        android:clickable="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tvAbout"
+        android:textColor="@color/black" />
+
+</LinearLayout>

@@ -2,4 +2,11 @@
     <string name="app_name">Poly云音乐</string>
     <string name="itemsearch">搜索</string>
     <string name="itemnight">夜间模式</string>
+    <string name="bylibrary">库</string>
+    <string name="tvAbout">关于</string>
+    <string name="tvSetting">设置</string>
+    <string name="tvPlaying">正在播放</string>
+    <string name="tvPlayQueue">播放队列</string>
+    <string name="tvFolders">Folders</string>
+    <string name="tvPlayList">播放列表</string>
 </resources>

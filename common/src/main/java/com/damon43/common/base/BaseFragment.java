@@ -30,12 +30,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     protected View contentView;
     public RxManager rxManager;
     protected Context mContext;
-    protected Unbinder mUnbinder;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         contentView = inflater.inflate(getLayoutResource(),container,false);
-        mUnbinder = ButterKnife.bind(this, contentView); //依赖注入
         rxManager = new RxManager();
         mContext = this.getContext();
         initPresenter();
@@ -68,9 +66,4 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         rxManager.clear();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-    }
 }

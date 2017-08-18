@@ -1,12 +1,10 @@
-package com.damon43.polycloudmusic.ui
+package com.damon43.polycloudmusic.ui.main
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import com.damon43.common.base.BaseActivity
 import com.damon43.common.commonutils.DensityUtil
 import com.damon43.polycloudmusic.MainActivity

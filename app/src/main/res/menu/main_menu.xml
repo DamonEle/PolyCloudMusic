@@ -5,7 +5,4 @@
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="always"
         android:title="@string/itemsearch"/>
-    <item android:id="@+id/item_enterNight"
-        app:showAsAction="never"
-        android:title="@string/itemnight"/>
 </menu>
