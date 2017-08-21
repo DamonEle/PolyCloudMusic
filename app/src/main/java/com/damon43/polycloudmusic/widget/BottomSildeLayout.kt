@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.damon43.polycloudmusic.R
 
@@ -35,14 +36,18 @@ class BottomSildeLayout : LinearLayout {
     }
 
     private fun initListener() {
-        viewTreeObserver.addOnGlobalLayoutListener {
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
             theLayoutParams = getLayoutParams() as
-                    LayoutParams?
+                LayoutParams?
             theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin, -
             defultHeight, theLayoutParams!!.rightMargin, theLayoutParams!!.bottomMargin)
-            layoutParams = theLayoutParams
             visibility = View.VISIBLE
+            Log.d(TAG,"asdfasdfasdf")
+            viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
+        viewTreeObserver.addOnGlobalLayoutListener()
+
+
     }
 
     private fun init() {
@@ -56,18 +61,16 @@ class BottomSildeLayout : LinearLayout {
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         val ex = event!!.rawX
-        val ey = event!!.rawY
+        val ey = event.rawY
 
-        when (event!!.action) {
+        when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                Log.d(TAG, "event: down in" + "ex:" + ex + " ,ey:" + ey)
                 downY = ey
-                return false
             }
             MotionEvent.ACTION_MOVE -> {
-                Log.d(TAG, "event: move in" + "ex:" + ex + " ,ey:" + ey)
 
                 theLayoutParams!!.topMargin = (theLayoutParams!!.topMargin + ey - downY).toInt()
+                layoutParams = theLayoutParams
             }
             MotionEvent.ACTION_UP -> Log.d(TAG, "event: up in" + "ex:" + ex + " ,ey:" + ey)
         }
