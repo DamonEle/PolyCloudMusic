@@ -28,16 +28,54 @@
 
         <com.damon43.polycloudmusic.widget.BottomSildeLayout
             android:layout_width="match_parent"
-            app:defult_height="55dp"
-            android:visibility="gone"
             android:layout_height="175dp"
             android:background="@color/primary_dark"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:defult_height="?attr/actionBarSize">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+            <RelativeLayout
+                android:id="@+id/rlPlayLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:paddingEnd="@dimen/padding_margin_10dp"
+                android:paddingStart="@dimen/padding_margin_10dp">
+
+                <ImageView
+                    android:id="@+id/ivBottomSongPic"
+                    android:layout_width="@dimen/padding_margin_55dp"
+                    android:layout_height="@dimen/padding_margin_55dp"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_launcher"
+                    android:layout_marginEnd="@dimen/padding_margin_10dp" />
+
+                <TextView
+                    android:id="@+id/tvBottomSongName"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_margin_5dp"
+                    android:layout_marginTop="@dimen/padding_margin_2dp"
+                    android:layout_toEndOf="@id/ivBottomSongPic"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tvBottomAuthor"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvBottomSongName"
+                    android:layout_toEndOf="@id/ivBottomSongPic"
+                    android:text="@string/app_name" />
+
+                <ImageView
+                    android:id="@+id/ivPlay"
+                    android:layout_width="@dimen/padding_margin_55dp"
+                    android:layout_height="@dimen/padding_margin_55dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_play_circle_filled_36dp" />
+            </RelativeLayout>
         </com.damon43.polycloudmusic.widget.BottomSildeLayout>
     </LinearLayout>
 
