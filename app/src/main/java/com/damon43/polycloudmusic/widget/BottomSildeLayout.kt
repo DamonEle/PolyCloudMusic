@@ -65,7 +65,6 @@ class BottomSildeLayout : LinearLayout {
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null && theLayoutParams != null) {
-            val ex = event.rawX
             val ey = event.rawY
 
             when (event.action) {
@@ -81,7 +80,7 @@ class BottomSildeLayout : LinearLayout {
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (theLayoutParams?.topMargin in -maxHeight..FOLDED_SIZE) {
+                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
                         openDrawer()
                     } else {
 
@@ -103,6 +102,7 @@ class BottomSildeLayout : LinearLayout {
                 Log.d(TAG, "size:$size")
                 if (size != null) {
                     theLayoutParams!!.topMargin = currentMargin + size
+                    layoutParams = theLayoutParams
                 }
             }
         })
