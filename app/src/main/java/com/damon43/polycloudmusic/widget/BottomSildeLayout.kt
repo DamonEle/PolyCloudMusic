@@ -20,6 +20,7 @@ class BottomSildeLayout : LinearLayout {
     var listener: ViewTreeObserver.OnGlobalLayoutListener? = null
     var theLayoutParams: LinearLayout.LayoutParams? = null
     var maxHeight = 0
+    var FOLDED_SIZE = 0
 
     constructor(con: Context) : super(con) {
         mContext = con
@@ -44,8 +45,8 @@ class BottomSildeLayout : LinearLayout {
             theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin, -
             defultHeight, theLayoutParams!!.rightMargin, theLayoutParams!!.bottomMargin)
             maxHeight = theLayoutParams!!.height
+            FOLDED_SIZE = (maxHeight - defultHeight) / 2
             visibility = View.VISIBLE
-            Log.d(TAG, "asdfasdfasdf")
             viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
         viewTreeObserver.addOnGlobalLayoutListener(listener)
@@ -79,7 +80,13 @@ class BottomSildeLayout : LinearLayout {
                         layoutParams = theLayoutParams
                     }
                 }
-                MotionEvent.ACTION_UP -> Log.d(TAG, "event: up in" + "ex:" + ex + " ,ey:" + ey)
+                MotionEvent.ACTION_UP -> {
+                    if (theLayoutParams?.topMargin in -maxHeight..FOLDED_SIZE) {
+                        openDrawer()
+                    } else {
+
+                    }
+                }
             }
             return true
         }
@@ -88,6 +95,17 @@ class BottomSildeLayout : LinearLayout {
 
     fun openDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
-        ValueAnimator.ofInt(currentMargin, )
+        val openAnim = ValueAnimator.ofInt(currentMargin, -maxHeight)
+        openAnim.duration = 1200L
+        openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
+            override fun onAnimationUpdate(animation: ValueAnimator?) {
+                val size: Int? = animation?.animatedValue as Int
+                Log.d(TAG, "size:$size")
+                if (size != null) {
+                    theLayoutParams!!.topMargin = currentMargin + size
+                }
+            }
+        })
+        openAnim.start()
     }
 }
