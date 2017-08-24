@@ -61,7 +61,7 @@ class BottomSildeLayout : LinearLayout {
     var downY: Float = 0f
     var MIN_SPREAD_SIZE: Float = -90f
     var downTopMargin: Int? = 0
-    val isStops
+    var isQuickOpen = false
     val TAG = "BottomSildeLayout"
     private val MOVE_TIME_LEVEL_MIN: Long = 100L
     private val MOVE_TIME_LEVEL_NORMAL: Long = 160L
@@ -78,6 +78,12 @@ class BottomSildeLayout : LinearLayout {
                     downTopMargin = theLayoutParams?.topMargin
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    if (ey - downY > MIN_SPREAD_SIZE) {
+                        val upTime = System.currentTimeMillis()
+                        if (upTime - downTime < MOVE_TIME_LEVEL_MIN) {
+
+                        }
+                    }
                     val xOffect = ((downTopMargin?.plus(ey))?.minus(downY))?.toInt()
                     if (xOffect in -maxHeight..-defultHeight) {
                         theLayoutParams?.topMargin = xOffect
@@ -85,10 +91,8 @@ class BottomSildeLayout : LinearLayout {
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    val upTime = System.currentTimeMillis()
-                    Log.d(TAG, "TIME:${upTime - downTime},move:${ey - downY}")
-                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE || (upTime - downTime <
-                            MOVE_TIME_LEVEL_MIN && ey - downY > MIN_SPREAD_SIZE)) {
+
+                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
                         openDrawer()
                     } else {
 
