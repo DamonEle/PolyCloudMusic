@@ -59,17 +59,22 @@ class BottomSildeLayout : LinearLayout {
     }
 
     var downY: Float = 0f
+    var MIN_SPREAD_SIZE: Float = -90f
     var downTopMargin: Int? = 0
+    val isStops
     val TAG = "BottomSildeLayout"
-
+    private val MOVE_TIME_LEVEL_MIN: Long = 100L
+    private val MOVE_TIME_LEVEL_NORMAL: Long = 160L
+    private val MOVE_TIME_LEVEL_MAX: Long = 210L
+    var downTime = 0L
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null && theLayoutParams != null) {
             val ey = event.rawY
-
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     downY = ey
+                    downTime = System.currentTimeMillis()
                     downTopMargin = theLayoutParams?.topMargin
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -80,7 +85,10 @@ class BottomSildeLayout : LinearLayout {
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
+                    val upTime = System.currentTimeMillis()
+                    Log.d(TAG, "TIME:${upTime - downTime},move:${ey - downY}")
+                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE || (upTime - downTime <
+                            MOVE_TIME_LEVEL_MIN && ey - downY > MIN_SPREAD_SIZE)) {
                         openDrawer()
                     } else {
 
@@ -90,18 +98,24 @@ class BottomSildeLayout : LinearLayout {
             return true
         }
         return false
+
     }
 
     fun openDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -maxHeight)
-        openAnim.duration = 1200L
+        openAnim.duration = when (Math.abs(maxHeight + currentMargin)) {
+            in 0..defultHeight / 2 -> MOVE_TIME_LEVEL_MIN
+            in defultHeight / 2..defultHeight -> MOVE_TIME_LEVEL_NORMAL
+            in defultHeight..defultHeight * 3 / 2 -> MOVE_TIME_LEVEL_MAX
+            else -> MOVE_TIME_LEVEL_NORMAL
+        }
         openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             override fun onAnimationUpdate(animation: ValueAnimator?) {
                 val size: Int? = animation?.animatedValue as Int
                 Log.d(TAG, "size:$size")
                 if (size != null) {
-                    theLayoutParams!!.topMargin = currentMargin + size
+                    theLayoutParams!!.topMargin = size
                     layoutParams = theLayoutParams
                 }
             }

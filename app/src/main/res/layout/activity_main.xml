@@ -28,7 +28,7 @@
 
         <com.damon43.polycloudmusic.widget.BottomSildeLayout
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="250dp"
             android:background="@color/primary_dark"
             android:orientation="vertical"
             android:visibility="gone"
