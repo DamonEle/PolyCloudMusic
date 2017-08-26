@@ -4,9 +4,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import com.damon43.polycloudmusic.R
 
@@ -21,6 +21,16 @@ class BottomSildeLayout : LinearLayout {
     var theLayoutParams: LinearLayout.LayoutParams? = null
     var maxHeight = 0
     var FOLDED_SIZE = 0
+
+    var vt: VelocityTracker? = null
+    var downY: Float = 0f
+    var downTopMargin: Int? = 0
+    var lastY = 0f
+    val TAG = "BottomSildeLayout"
+    var lastTime = 0L
+    var speedY: Float = 0f
+    var mPointId = 0
+    var mMaxVelocity = 0f
 
     constructor(con: Context) : super(con) {
         mContext = con
@@ -55,35 +65,30 @@ class BottomSildeLayout : LinearLayout {
     }
 
     private fun init() {
-
+        vt = VelocityTracker.obtain()
+        mMaxVelocity = ViewConfiguration.get(mContext).scaledMaximumFlingVelocity.toFloat();
     }
 
-    var downY: Float = 0f
-    var MIN_SPREAD_SIZE: Float = -90f
-    var downTopMargin: Int? = 0
-    var isQuickOpen = false
-    val TAG = "BottomSildeLayout"
-    private val MOVE_TIME_LEVEL_MIN: Long = 100L
-    private val MOVE_TIME_LEVEL_NORMAL: Long = 160L
-    private val MOVE_TIME_LEVEL_MAX: Long = 210L
-    var downTime = 0L
+
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null && theLayoutParams != null) {
+            vt = VelocityTracker.obtain()
+            vt?.addMovement(event)
             val ey = event.rawY
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     downY = ey
-                    downTime = System.currentTimeMillis()
+                    lastY = ey
+                    mPointId = event.getPointerId(0)
+                    lastTime = System.currentTimeMillis()
                     downTopMargin = theLayoutParams?.topMargin
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (ey - downY > MIN_SPREAD_SIZE) {
-                        val upTime = System.currentTimeMillis()
-                        if (upTime - downTime < MOVE_TIME_LEVEL_MIN) {
-
-                        }
-                    }
+                    vt?.computeCurrentVelocity(1, mMaxVelocity / 10000)
+                    speedY = vt?.getYVelocity(mPointId) ?: 1f
+                    if (speedY == 0f) speedY = mMaxVelocity / 10000
+                    Log.d(TAG, "speedY:$speedY")
                     val xOffect = ((downTopMargin?.plus(ey))?.minus(downY))?.toInt()
                     if (xOffect in -maxHeight..-defultHeight) {
                         theLayoutParams?.topMargin = xOffect
@@ -91,7 +96,7 @@ class BottomSildeLayout : LinearLayout {
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-
+                    releaseVelocityTracker()
                     if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
                         openDrawer()
                     } else {
@@ -108,12 +113,8 @@ class BottomSildeLayout : LinearLayout {
     fun openDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -maxHeight)
-        openAnim.duration = when (Math.abs(maxHeight + currentMargin)) {
-            in 0..defultHeight / 2 -> MOVE_TIME_LEVEL_MIN
-            in defultHeight / 2..defultHeight -> MOVE_TIME_LEVEL_NORMAL
-            in defultHeight..defultHeight * 3 / 2 -> MOVE_TIME_LEVEL_MAX
-            else -> MOVE_TIME_LEVEL_NORMAL
-        }
+        openAnim.duration = Math.abs(((maxHeight + currentMargin) / speedY).toLong())
+        Log.d(TAG, "duration:${openAnim.duration}");
         openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             override fun onAnimationUpdate(animation: ValueAnimator?) {
                 val size: Int? = animation?.animatedValue as Int
@@ -124,6 +125,16 @@ class BottomSildeLayout : LinearLayout {
                 }
             }
         })
+        openAnim.interpolator = DecelerateInterpolator()
         openAnim.start()
+    }
+
+    //释放VelocityTracker
+
+    private fun releaseVelocityTracker() {
+        if (null != vt) {
+            vt?.clear()
+            vt?.recycle()
+        }
     }
 }
