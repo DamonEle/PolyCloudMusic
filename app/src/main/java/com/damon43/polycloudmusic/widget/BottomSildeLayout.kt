@@ -111,6 +111,7 @@ class BottomSildeLayout : LinearLayout {
     private val SPREAD_LEVEL_1_DURA = 100L
     private val SPREAD_LEVEL_2_DURA = 200L
     private val SPREAD_LEVEL_3_DURA = 250L
+
     private fun closeDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -defultHeight)
@@ -136,7 +137,12 @@ class BottomSildeLayout : LinearLayout {
     fun openDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -maxHeight)
-        openAnim.duration = Math.abs(((maxHeight + currentMargin) / speedY).toLong())
+        openAnim.duration = when (currentMargin) {
+            in -FOLDED_SIZE - defultHeight / 3..-FOLDED_SIZE -> SPREAD_LEVEL_2_DURA
+            in -maxHeight..-FOLDED_SIZE - defultHeight / 3 -> SPREAD_LEVEL_1_DURA
+            else -> Math.abs(((maxHeight + currentMargin) / speedY).toLong())
+        }
+
         Log.d(TAG, "duration:${openAnim.duration}")
         openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             override fun onAnimationUpdate(animation: ValueAnimator?) {
