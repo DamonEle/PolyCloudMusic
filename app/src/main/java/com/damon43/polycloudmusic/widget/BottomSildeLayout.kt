@@ -55,12 +55,11 @@ class BottomSildeLayout : LinearLayout {
             theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin, -
             defultHeight, theLayoutParams!!.rightMargin, theLayoutParams!!.bottomMargin)
             maxHeight = theLayoutParams!!.height
-            FOLDED_SIZE = (maxHeight - defultHeight) / 2
+            FOLDED_SIZE = (maxHeight + defultHeight) / 2
             visibility = View.VISIBLE
             viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
         viewTreeObserver.addOnGlobalLayoutListener(listener)
-
 
     }
 
@@ -80,14 +79,13 @@ class BottomSildeLayout : LinearLayout {
                 MotionEvent.ACTION_DOWN -> {
                     downY = ey
                     lastY = ey
-                    mPointId = event.getPointerId(0)
                     lastTime = System.currentTimeMillis()
                     downTopMargin = theLayoutParams?.topMargin
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    vt?.computeCurrentVelocity(1, mMaxVelocity / 10000)
-                    speedY = vt?.getYVelocity(mPointId) ?: 1f
-                    if (speedY == 0f) speedY = mMaxVelocity / 10000
+                    vt?.computeCurrentVelocity(1, 3f)
+                    speedY = vt?.getYVelocity() ?: 1f
+                    if (speedY == 0f) speedY = mMaxVelocity / 20000
                     Log.d(TAG, "speedY:$speedY")
                     val xOffect = ((downTopMargin?.plus(ey))?.minus(downY))?.toInt()
                     if (xOffect in -maxHeight..-defultHeight) {
@@ -97,10 +95,10 @@ class BottomSildeLayout : LinearLayout {
                 }
                 MotionEvent.ACTION_UP -> {
                     releaseVelocityTracker()
-                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
+                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE || speedY in -3.0..-0.5) {
                         openDrawer()
                     } else {
-
+                        closeDrawer()
                     }
                 }
             }
@@ -110,11 +108,36 @@ class BottomSildeLayout : LinearLayout {
 
     }
 
+    private val SPREAD_LEVEL_1_DURA = 100L
+    private val SPREAD_LEVEL_2_DURA = 200L
+    private val SPREAD_LEVEL_3_DURA = 250L
+    private fun closeDrawer() {
+        val currentMargin = theLayoutParams!!.topMargin
+        val openAnim = ValueAnimator.ofInt(currentMargin, -defultHeight)
+        openAnim.duration = when (currentMargin) {
+            in -(3 * defultHeight) / 2..-defultHeight -> SPREAD_LEVEL_1_DURA
+            in -2 * defultHeight..-(3 * defultHeight) / 2 -> SPREAD_LEVEL_2_DURA
+            else -> SPREAD_LEVEL_3_DURA
+        }
+        openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
+            override fun onAnimationUpdate(animation: ValueAnimator?) {
+                val size: Int? = animation?.animatedValue as Int
+                Log.d(TAG, "size:$size")
+                if (size != null) {
+                    theLayoutParams!!.topMargin = size
+                    layoutParams = theLayoutParams
+                }
+            }
+        })
+        openAnim.interpolator = DecelerateInterpolator()
+        openAnim.start()
+    }
+
     fun openDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -maxHeight)
         openAnim.duration = Math.abs(((maxHeight + currentMargin) / speedY).toLong())
-        Log.d(TAG, "duration:${openAnim.duration}");
+        Log.d(TAG, "duration:${openAnim.duration}")
         openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             override fun onAnimationUpdate(animation: ValueAnimator?) {
                 val size: Int? = animation?.animatedValue as Int
