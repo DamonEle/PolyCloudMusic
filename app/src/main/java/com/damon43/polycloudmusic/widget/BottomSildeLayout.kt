@@ -6,14 +6,15 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import com.damon43.polycloudmusic.R
+import com.damon43.polycloudmusic.theinterface.OnBottomPlayStateListener
 
 /**
  * Created by lenovo on 2017/8/18.
  */
 class BottomSildeLayout : LinearLayout {
+    var heightListener: OnBottomPlayStateListener? = null
     var mContext: Context? = null
     //默认高度
     var defultHeight = 0
@@ -21,7 +22,8 @@ class BottomSildeLayout : LinearLayout {
     var theLayoutParams: LinearLayout.LayoutParams? = null
     var maxHeight = 0
     var FOLDED_SIZE = 0
-
+    var heightInterval = 0
+    var alphaInterval = 0
     var vt: VelocityTracker? = null
     var downY: Float = 0f
     var downTopMargin: Int? = 0
@@ -31,6 +33,14 @@ class BottomSildeLayout : LinearLayout {
     var speedY: Float = 0f
     var mPointId = 0
     var mMaxVelocity = 0f
+    var spreadHeightLevel1 = 0
+    var spreadHeightLevel2 = 0
+    var spreadHeightLevel3 = 0
+    var spreadHeightLevel4 = 0
+    var spreadHeightLevel5 = 0
+    var spreadHeightLevel6 = 0
+    var spreadHeightLevel7 = 0
+    var spreadHeightLevel8 = 0
 
     constructor(con: Context) : super(con) {
         mContext = con
@@ -52,15 +62,24 @@ class BottomSildeLayout : LinearLayout {
         listener = ViewTreeObserver.OnGlobalLayoutListener {
             theLayoutParams = getLayoutParams() as
                     LayoutParams?
-            theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin, -
-            defultHeight, theLayoutParams!!.rightMargin, theLayoutParams!!.bottomMargin)
+            theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin,
+                    defultHeight, theLayoutParams!!.rightMargin, theLayoutParams!!.bottomMargin)
             maxHeight = theLayoutParams!!.height
+            heightInterval = (maxHeight - defultHeight) / 8 //  8个级别的透明度
+            spreadHeightLevel1 = -(defultHeight + heightInterval)
+            spreadHeightLevel2 = -(spreadHeightLevel1 + heightInterval)
+            spreadHeightLevel3 = -(spreadHeightLevel2 + heightInterval)
+            spreadHeightLevel4 = -(spreadHeightLevel3 + heightInterval)
+            spreadHeightLevel5 = -(spreadHeightLevel4 + heightInterval)
+            spreadHeightLevel6 = -(spreadHeightLevel5 + heightInterval)
+            spreadHeightLevel7 = -(spreadHeightLevel6 + heightInterval)
             FOLDED_SIZE = (maxHeight + defultHeight) / 2
             visibility = View.VISIBLE
+            -maxHeight + heightInterval
             viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
         viewTreeObserver.addOnGlobalLayoutListener(listener)
-
+        alphaInterval = 255 / 6
     }
 
     private fun init() {
@@ -72,7 +91,6 @@ class BottomSildeLayout : LinearLayout {
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null && theLayoutParams != null) {
-            vt = VelocityTracker.obtain()
             vt?.addMovement(event)
             val ey = event.rawY
             when (event.action) {
@@ -83,22 +101,38 @@ class BottomSildeLayout : LinearLayout {
                     downTopMargin = theLayoutParams?.topMargin
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    vt?.computeCurrentVelocity(1, 3f)
-                    speedY = vt?.getYVelocity() ?: 1f
-                    if (speedY == 0f) speedY = mMaxVelocity / 20000
-                    Log.d(TAG, "speedY:$speedY")
                     val xOffect = ((downTopMargin?.plus(ey))?.minus(downY))?.toInt()
                     if (xOffect in -maxHeight..-defultHeight) {
                         theLayoutParams?.topMargin = xOffect
                         layoutParams = theLayoutParams
+                        heightListener?.onChangeDegree(when (xOffect) {
+                            in -maxHeight..spreadHeightLevel7 -> 0
+                            in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
+                            in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
+                            in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
+                            in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
+                            in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
+                            in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
+                            else -> 0
+                        })
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    releaseVelocityTracker()
-                    if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE || speedY in -3.0..-0.5) {
+                    vt?.computeCurrentVelocity(1, 3f)
+                    speedY = vt?.getYVelocity() ?: 1f
+                    if (speedY == 0f) speedY = mMaxVelocity / 20000
+                    Log.d(TAG, "speedY:$speedY")
+
+                    if (speedY < -0.4) {
                         openDrawer()
-                    } else {
+                    } else if (speedY > 0.4) {
                         closeDrawer()
+                    } else {
+                        if (theLayoutParams?.topMargin in -maxHeight..-FOLDED_SIZE) {
+                            openDrawer()
+                        } else {
+                            closeDrawer()
+                        }
                     }
                 }
             }
@@ -110,15 +144,14 @@ class BottomSildeLayout : LinearLayout {
 
     private val SPREAD_LEVEL_1_DURA = 100L
     private val SPREAD_LEVEL_2_DURA = 200L
-    private val SPREAD_LEVEL_3_DURA = 250L
 
     private fun closeDrawer() {
         val currentMargin = theLayoutParams!!.topMargin
         val openAnim = ValueAnimator.ofInt(currentMargin, -defultHeight)
         openAnim.duration = when (currentMargin) {
             in -(3 * defultHeight) / 2..-defultHeight -> SPREAD_LEVEL_1_DURA
-            in -2 * defultHeight..-(3 * defultHeight) / 2 -> SPREAD_LEVEL_2_DURA
-            else -> SPREAD_LEVEL_3_DURA
+            in -FOLDED_SIZE..-(3 * defultHeight) / 2 -> SPREAD_LEVEL_2_DURA
+            else -> Math.abs(((maxHeight + currentMargin) / speedY).toLong())
         }
         openAnim.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             override fun onAnimationUpdate(animation: ValueAnimator?) {
@@ -127,6 +160,16 @@ class BottomSildeLayout : LinearLayout {
                 if (size != null) {
                     theLayoutParams!!.topMargin = size
                     layoutParams = theLayoutParams
+                    heightListener?.onChangeDegree(when (size) {
+                        in -maxHeight..spreadHeightLevel7 -> 0
+                        in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
+                        in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
+                        in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
+                        in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
+                        in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
+                        in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
+                        else -> 0
+                    })
                 }
             }
         })
@@ -151,6 +194,16 @@ class BottomSildeLayout : LinearLayout {
                 if (size != null) {
                     theLayoutParams!!.topMargin = size
                     layoutParams = theLayoutParams
+                    heightListener?.onChangeDegree(when (size) {
+                        in -maxHeight..spreadHeightLevel7 -> 0
+                        in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
+                        in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
+                        in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
+                        in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
+                        in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
+                        in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
+                        else -> 0
+                    })
                 }
             }
         })
@@ -165,5 +218,10 @@ class BottomSildeLayout : LinearLayout {
             vt?.clear()
             vt?.recycle()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        releaseVelocityTracker()
     }
 }
