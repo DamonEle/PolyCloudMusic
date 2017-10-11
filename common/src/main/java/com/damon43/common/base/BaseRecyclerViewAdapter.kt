@@ -8,11 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.damon43.common.baseinterface.OnRecyclerViewItemClickListener
-
-import java.util.ArrayList
-import java.util.HashMap
 
 /**
  * @author damonmasty
@@ -22,7 +18,12 @@ import java.util.HashMap
 
 abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerViewAdapter<T>.BaseViewHolder> {
 
-    val datas: MutableList<T> = mutableListOf()
+    var datas : MutableList<T> = mutableListOf()
+        set(value) {
+            this.datas.clear()
+            this.datas.addAll(value)
+            notifyDataSetChanged()
+        }
     protected var mContext: Context
     protected var onItemClickListener: OnRecyclerViewItemClickListener? = null
 
@@ -35,32 +36,22 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         this.datas.addAll(datas)
     }
 
-    fun setDatas(datas: MutableList<T>) {
-        this.datas.clear()
-        this.datas.addAll(datas)
-        notifyDataSetChanged()
-    }
 
     fun addDatas(datas: List<T>) {
         this.datas.addAll(datas)
         notifyDataSetChanged()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return getItemViewType(datas!![position])
-    }
+    override fun getItemViewType(position: Int): Int = getItemViewType(datas!![position])
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewAdapter<T>.BaseViewHolder {
-        return BaseViewHolder(LayoutInflater.from(mContext).inflate(onCreateView(viewType), parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewAdapter<T>.BaseViewHolder =
+            BaseViewHolder(LayoutInflater.from(mContext).inflate(onCreateView(viewType), parent, false))
 
     override fun onBindViewHolder(holder: BaseRecyclerViewAdapter<T>.BaseViewHolder, position: Int) {
         onBindView(datas!![position], holder)
     }
 
-    override fun getItemCount(): Int {
-        return if (datas == null) 0 else datas!!.size
-    }
+    override fun getItemCount(): Int = if (datas == null) 0 else datas!!.size
 
     abstract fun onCreateView(viewType: Int): Int
 
@@ -76,13 +67,9 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
             viewDatas = SparseArray<View>()
         }
 
-        fun getTextView(resId: Int): TextView {
-            return getView(resId)
-        }
+        fun getTextView(resId: Int): TextView = getView(resId)
 
-        fun getImageView(resId: Int): ImageView {
-            return getView(resId)
-        }
+        fun getImageView(resId: Int): ImageView = getView(resId)
 
         fun setText(resId: Int, strId: String) {
             getTextView(resId).text = strId

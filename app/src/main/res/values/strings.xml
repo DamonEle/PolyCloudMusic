@@ -9,4 +9,9 @@
     <string name="tvPlayQueue">播放队列</string>
     <string name="tvFolders">Folders</string>
     <string name="tvPlayList">播放列表</string>
+    <string name="kind_song">歌曲</string>
+    <string name="kind_album">专辑</string>
+    <string name="kind_singer">艺术家</string>
+    <string name="song_img">歌曲相关图片</string>
+    <string name="song_name">一条孤岛的鲸</string>
 </resources>

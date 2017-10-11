@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -16,28 +16,24 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primary"
-            app:navigationIcon="@drawable/ic_menu_white_24dp"
+            app:navigationIcon="@drawable/ic_menu_gary_24dp"
             app:title="@string/app_name"
-            app:titleTextColor="@color/white" />
-
-        <FrameLayout
-            android:id="@+id/flContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/primary_light" />
+            app:titleTextColor="@color/primary_text" />
 
         <com.damon43.polycloudmusic.widget.BottomSildeLayout
+            android:id="@+id/bslPlay"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:background="@color/primary_dark"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:visibility="gone"
-            app:defult_height="?attr/actionBarSize">
+            app:defult_height="60dp">
 
             <RelativeLayout
                 android:id="@+id/rlPlayLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/padding_margin_5dp"
                 android:paddingEnd="@dimen/padding_margin_10dp"
                 android:paddingStart="@dimen/padding_margin_10dp">
 
@@ -45,9 +41,10 @@
                     android:id="@+id/ivBottomSongPic"
                     android:layout_width="@dimen/padding_margin_55dp"
                     android:layout_height="@dimen/padding_margin_55dp"
+                    android:clickable="true"
                     android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_launcher"
-                    android:layout_marginEnd="@dimen/padding_margin_10dp" />
+                    android:layout_marginEnd="@dimen/padding_margin_10dp"
+                    android:background="@mipmap/ic_launcher" />
 
                 <TextView
                     android:id="@+id/tvBottomSongName"
@@ -56,28 +53,41 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/padding_margin_5dp"
                     android:layout_marginTop="@dimen/padding_margin_2dp"
+                    android:textColor="@color/primary_text"
                     android:layout_toEndOf="@id/ivBottomSongPic"
                     android:text="@string/app_name" />
 
                 <TextView
                     android:id="@+id/tvBottomAuthor"
+                    android:clickable="true"
                     style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text"
                     android:layout_below="@id/tvBottomSongName"
                     android:layout_toEndOf="@id/ivBottomSongPic"
                     android:text="@string/app_name" />
 
-                <ImageView
+                <Button
                     android:id="@+id/ivPlay"
-                    android:layout_width="@dimen/padding_margin_55dp"
-                    android:layout_height="@dimen/padding_margin_55dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/ic_play_circle_filled_36dp" />
+                    android:background="@drawable/ic_bottom_play" />
             </RelativeLayout>
         </com.damon43.polycloudmusic.widget.BottomSildeLayout>
-    </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bslPlay"
+            android:layout_below="@id/tbMain"
+            android:background="@color/primary_light" />
+
+
+    </RelativeLayout>
 
     <include layout="@layout/layout_main_left" />
 

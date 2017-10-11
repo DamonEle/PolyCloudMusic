@@ -1,4 +1,4 @@
-package com.damon43.polycloudmusic.ui.main
+package com.damon43.polycloudmusic.ui.main.activity
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

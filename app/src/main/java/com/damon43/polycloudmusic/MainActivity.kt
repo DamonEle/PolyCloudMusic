@@ -1,26 +1,29 @@
 package com.damon43.polycloudmusic
 
-import android.support.v4.app.FragmentTransaction
+import android.content.ComponentName
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.view.Gravity
 import android.view.View
 import com.damon43.common.base.BaseActivity
-import com.damon43.common.base.BaseFragment
-import com.damon43.polycloudmusic.ui.SongLibraryFragment
-import com.damon43.polycloudmusic.ui.main.FoldersFragment
-import com.damon43.polycloudmusic.ui.main.PlayListFragment
-import com.damon43.polycloudmusic.ui.main.PlayQueueFragment
+import com.damon43.polycloudmusic.helper.PolyMusicHelper
+import com.damon43.polycloudmusic.ui.main.fragment.SongLibraryFragment
+import com.damon43.polycloudmusic.ui.main.fragment.FoldersFragment
+import com.damon43.polycloudmusic.ui.main.fragment.PlayListFragment
+import com.damon43.polycloudmusic.ui.main.fragment.PlayQueueFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_left.*
 import org.jetbrains.anko.toast
 
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
+
 
     val foldersFragment = FoldersFragment()
     val playListFragment = PlayListFragment()
     val playQueueFragment = PlayQueueFragment()
     val songLibraryFragment = SongLibraryFragment()
-
-    var fromFragment: BaseFragment? = null
+    /*会话*/
+    var mToken : PolyMusicHelper.Companion.ConnectionToken ? = null
 
 //    https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502884801042&di=eff74b36416ad98e300a4e9c88cefb3a&imgtype=0&src=http%3A%2F%2Fwww.lolshipin.com%2Fuploads%2Fallimg%2F150414%2F23-1504141519350-L.jpg
 
@@ -44,15 +47,15 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         tvPlayList.setOnClickListener(MainActivity@ this)
         tvFolders.setOnClickListener(MainActivity@ this)
         tvPlayQueue.setOnClickListener(MainActivity@ this)
+        ivPlay.setOnClickListener(MainActivity@ this)
+
         setUpFragment()
+        mToken = PolyMusicHelper.bindService(MainActivity@ this, MainActivity@ this)
     }
 
-    override fun initPresenter() {
-    }
+    override fun initPresenter() {}
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
-    }
+    override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -63,6 +66,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.tvPlaying -> toast("播放中")
             R.id.tvSetting -> toast("设置")
             R.id.tvAbout -> toast("关于")
+            R.id.ivPlay -> PolyMusicHelper.playMusic()
         }
     }
 
@@ -78,5 +82,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             3 -> fr.hide(foldersFragment).hide(playListFragment).show(playQueueFragment).hide(
                     songLibraryFragment).commit()
         }
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PolyMusicHelper.unBindService(mToken)
     }
 }
