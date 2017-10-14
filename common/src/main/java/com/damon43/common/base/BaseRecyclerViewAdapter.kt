@@ -31,7 +31,7 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         this.mContext = mContext
     }
 
-    constructor(context: Context, datas: MutableList<T>) {
+    constructor(context: Context, datas: List<T>) {
         this.mContext = context
         this.datas.addAll(datas)
     }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.damon43.common.baserx.RxManager;
 import com.damon43.common.commonutils.ClassUtil;
 import com.damon43.common.commonutils.LogUtils;
+import com.zhy.m.permission.MPermissions;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -30,6 +31,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     protected View contentView;
     public RxManager rxManager;
     protected Context mContext;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,4 +68,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         rxManager.clear();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

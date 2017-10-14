@@ -3,6 +3,7 @@ package com.damon43.common.base;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.damon43.common.commonutils.CollectionUtils;
 
@@ -14,7 +15,7 @@ import java.util.List;
  *         Created on 上午10:39 17-1-29.
  */
 
-public class BaseFragmentAdapter extends FragmentPagerAdapter {
+public class BaseFragmentAdapter extends FragmentStatePagerAdapter {
 
     List<Fragment> fragmentList = new ArrayList<Fragment>();
     private List<String> mTitles;

@@ -3,27 +3,32 @@ package com.damon43.polycloudmusic
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import com.damon43.common.base.BaseActivity
+import com.damon43.common.commonutils.LogUtils
+import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.helper.PolyMusicHelper
 import com.damon43.polycloudmusic.ui.main.fragment.SongLibraryFragment
 import com.damon43.polycloudmusic.ui.main.fragment.FoldersFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayListFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayQueueFragment
+import com.zhy.m.permission.MPermissions
+import com.zhy.m.permission.PermissionDenied
+import com.zhy.m.permission.PermissionGrant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_left.*
 import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
 
-
     val foldersFragment = FoldersFragment()
     val playListFragment = PlayListFragment()
     val playQueueFragment = PlayQueueFragment()
     val songLibraryFragment = SongLibraryFragment()
     /*会话*/
-    var mToken : PolyMusicHelper.Companion.ConnectionToken ? = null
+    var mToken: PolyMusicHelper.Companion.ConnectionToken? = null
 
 //    https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502884801042&di=eff74b36416ad98e300a4e9c88cefb3a&imgtype=0&src=http%3A%2F%2Fwww.lolshipin.com%2Fuploads%2Fallimg%2F150414%2F23-1504141519350-L.jpg
 
@@ -95,4 +100,5 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         super.onDestroy()
         PolyMusicHelper.unBindService(mToken)
     }
+
 }
