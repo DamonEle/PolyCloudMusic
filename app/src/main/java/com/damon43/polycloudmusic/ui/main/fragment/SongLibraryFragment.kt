@@ -4,12 +4,11 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import com.damon43.common.base.BaseFragment
-import com.damon43.polycloudmusic.MainActivity
 import com.damon43.polycloudmusic.R
-import com.damon43.polycloudmusic.adapter.SongLibraryKindsAdapter
+import com.damon43.polycloudmusic.ui.main.adapter.SongLibraryKindsAdapter
 import com.damon43.polycloudmusic.ui.songLibrary.fragment.SongAlbumFragment
 import com.damon43.polycloudmusic.ui.songLibrary.fragment.SongListFragment
-import com.damon43.polycloudmusic.ui.songLibrary.fragment.SongSingerFragment
+import com.damon43.polycloudmusic.ui.songLibrary.fragment.SongArtistFragment
 import org.jetbrains.anko.find
 
 /**
@@ -20,7 +19,7 @@ class SongLibraryFragment : BaseFragment() {
     var kindsAdapter: SongLibraryKindsAdapter? = null
     val kindFragment = SongListFragment()
     val albumFragment = SongAlbumFragment()
-    val singerFragment = SongSingerFragment()
+    val singerFragment = SongArtistFragment()
     val fragmengs: List<Fragment> = listOf(kindFragment, albumFragment, singerFragment)
     var titles: List<String> = listOf()
     lateinit var tlTop: TabLayout

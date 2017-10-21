@@ -1,4 +1,4 @@
-package com.damon43.polycloudmusic.adapter
+package com.damon43.polycloudmusic.ui.main.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

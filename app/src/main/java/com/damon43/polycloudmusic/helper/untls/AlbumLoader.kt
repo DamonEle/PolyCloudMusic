@@ -35,7 +35,8 @@ object AlbumLoader {
     /**按条件查询本地音乐*/
     private fun makeAlbumsCursor(context: Context, selection: String?, params: Array<String>?): Cursor {
         return context.contentResolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, arrayOf
-        ("_id", "album", "artist", "artist_id", "numsongs", "minyear"), selection, params, null);
+        ("_id", "album", "artist", "artist_id", "numsongs", "minyear"), selection, params,
+                MediaStore.Audio.Albums.DEFAULT_SORT_ORDER);
     }
 
     /**

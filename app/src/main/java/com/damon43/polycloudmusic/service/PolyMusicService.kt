@@ -3,8 +3,11 @@ package com.damon43.polycloudmusic.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.provider.MediaStore
 import com.damon43.common.commonutils.LogUtils
 import com.damon43.polycloudmusic.IPolyMusicInterface
+import com.damon43.polycloudmusic.bean.MusicPlayTrack
+import com.damon43.polycloudmusic.helper.MusicPlayManager
 import java.lang.ref.WeakReference
 
 /**
@@ -13,6 +16,9 @@ import java.lang.ref.WeakReference
  */
 class PolyMusicService : Service() {
 
+    /*保存着播放记录的集合*/
+    val musics = mutableListOf<MusicPlayTrack>()
+    lateinit var mMusicManager: MusicPlayManager
     /*服务端功能实现类*/
     var serviceStub: ServiceBinder? = null
 
@@ -23,6 +29,7 @@ class PolyMusicService : Service() {
 
     private fun init() {
         serviceStub = ServiceBinder(PolyMusicService@ this)
+        mMusicManager = MusicPlayManager(PolyMusicService@ this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -103,8 +110,12 @@ class PolyMusicService : Service() {
         LogUtils.logD("play music!")
     }
 
+    /**
+     * 开始按当前队列播放音乐
+     */
     private fun open(list: LongArray?, position: Int, sourceId: Long, sourceType: Int) {
 
+        mMusicManager.playAll(list?.toList(),position)
     }
 
     private fun openFile(path: String?) {

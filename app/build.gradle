@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.greenrobot.greendao'
 
 apply plugin: 'com.neenbedankt.android-apt'
 android {
@@ -20,6 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    greendao{
+        schemaVersion 1
+        daoPackage 'com.damon43.polycloudmusic.db'
+        targetGenDir 'src/main/java'
+    }
 }
 
 dependencies {
@@ -34,6 +40,8 @@ dependencies {
     //6.0权限
     apt 'com.zhy:mpermission-compiler:1.0.0'
     compile 'com.zhy:mpermission-api:1.0.0'
+    //数据库
+    compile 'org.greenrobot:greendao:3.2.0'
     testCompile 'junit:junit:4.12'
     compile project(':common')
 }

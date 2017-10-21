@@ -1,8 +1,12 @@
 package com.damon43.polycloudmusic
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.os.IBinder
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -100,5 +104,39 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         super.onDestroy()
         PolyMusicHelper.unBindService(mToken)
     }
+    private val PERMISSIONS_READ_EXTERNAL_STORAGE: Int = 100
 
+    fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(MainActivity@ this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity@ this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    PERMISSIONS_READ_EXTERNAL_STORAGE)
+            LogUtils.logD("check")
+
+        } else {
+//            mPresenter.loadAllCustomAlbums(mContext)
+            LogUtils.logD("not check")
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_READ_EXTERNAL_STORAGE -> {
+                if (grantResults.size > 0) {
+//                    mPresenter.loadAllCustomAlbums(mContext)
+                    LogUtils.logD("success")
+                } else {
+                    //failed...
+                    LogUtils.logD("failed")
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPermission()
+    }
 }

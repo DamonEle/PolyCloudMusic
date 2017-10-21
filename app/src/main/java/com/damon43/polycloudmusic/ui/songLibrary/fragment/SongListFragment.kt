@@ -1,13 +1,16 @@
 package com.damon43.polycloudmusic.ui.songLibrary.fragment
 
-import android.support.v7.widget.DefaultItemAnimator
+import android.Manifest
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.damon43.common.base.BaseFragment
 import com.damon43.common.commonutils.LogUtils
 import com.damon43.polycloudmusic.R
-import com.damon43.polycloudmusic.adapter.SongListAdapter
+import com.damon43.polycloudmusic.ui.songLibrary.adapter.SongListAdapter
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.bean.Song
 import com.damon43.polycloudmusic.ui.songLibrary.contract.SongListContract
@@ -25,20 +28,23 @@ class SongListFragment : BaseFragment(), SongListContract.View {
     lateinit var rvSongList: RecyclerView
     var songAdapter: SongListAdapter? = null
 
+
+    val permissions = arrayOf( Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     override fun getLayoutResource(): Int = R.layout.fragment_kind_song
 
     override fun initView() {
         rvSongList = contentView.find(R.id.rvSongList)
         rvSongList.layoutManager = LinearLayoutManager(mContext,
                 LinearLayoutManager.VERTICAL, false)
-        rvSongList.addItemDecoration(DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL))
+        rvSongList.addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
     }
 
     override fun initPresenter() {
         mPresenter = SongListPresenter()
         mPresenter.setVM(SongListModel(), SongListFragment@ this)
-        mPresenter.loadAllCustomSongs(mContext)
-
+        checkPermission()
     }
 
     override fun showAllCustomSongs(songs: List<Song>) {
@@ -48,25 +54,31 @@ class SongListFragment : BaseFragment(), SongListContract.View {
         }
     }
 
-    @PermissionGrant(Constant.RUQUEST_LOAD_MUSIC)
-    fun requestLoadMusicSuccess() {
-        LogUtils.logD("success")
-        mPresenter.loadAllCustomSongs(mContext)
+    private val PERMISSIONS_READ_EXTERNAL_STORAGE: Int = 100
+
+    fun checkPermission() {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                    permissions, PERMISSIONS_READ_EXTERNAL_STORAGE)
+        } else {
+            mPresenter.loadAllCustomSongs(mContext)
+            LogUtils.logD("load")
+        }
     }
 
-    @PermissionDenied(Constant.RUQUEST_LOAD_MUSIC)
-    fun requestLoadMusicFailed() {
-        LogUtils.logD("failed ")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_READ_EXTERNAL_STORAGE -> {
+                if (grantResults.size > 0) {
+                    mPresenter.loadAllCustomSongs(mContext)
+                } else {
+                    //failed...
+                }
+            }
+        }
     }
 
-    fun requestLoadMusic() {
-        MPermissions.requestPermissions(SongListFragment@ this, Constant.RUQUEST_LOAD_MUSIC,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 
 }

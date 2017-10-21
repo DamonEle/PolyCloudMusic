@@ -2,20 +2,20 @@ package com.damon43.polycloudmusic.ui.songLibrary.presenter
 
 import android.content.Context
 import com.damon43.polycloudmusic.bean.Album
-import com.damon43.polycloudmusic.bean.Song
+import com.damon43.polycloudmusic.bean.Artist
 import com.damon43.polycloudmusic.ui.songLibrary.contract.SongAlbumContract
-import com.damon43.polycloudmusic.ui.songLibrary.contract.SongListContract
+import com.damon43.polycloudmusic.ui.songLibrary.contract.SongArtistContract
 import rx.Subscriber
 
 /**
  * desc 歌曲列表fragment界面
  * Created by lenovo on 2017/10/12.
  */
-class SongAlbumPresenter : SongAlbumContract.Presenter() {
+class SongArtistPresenter : SongArtistContract.Presenter() {
 
-    override fun loadAllCustomAlbums(context: Context) {
-        mModel?.loadAllCustomAlbums(context)
-                ?.subscribe(object : Subscriber<List<Album>>() {
+    override fun loadAllCustomArtists(context: Context) {
+        mModel?.loadAllCustomArtists(context)
+                ?.subscribe(object : Subscriber<List<Artist>>() {
                     override fun onError(e: Throwable?) {
                         mView.onLoadFailed(e, "")
                     }
@@ -24,8 +24,8 @@ class SongAlbumPresenter : SongAlbumContract.Presenter() {
                         mView.onLoaded()
                     }
 
-                    override fun onNext(t: List<Album>) {
-                        mView.showAllCustomAlbums(t)
+                    override fun onNext(t: List<Artist>) {
+                        mView.showAllCustomArtists(t)
                     }
 
                 })

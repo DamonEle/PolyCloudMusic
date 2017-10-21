@@ -19,7 +19,9 @@ class SongListModel : SongListContract.Model {
     }
 
     override fun loadAllCustomSongs(context: Context): Observable<List<Song>> {
-        return Observable.just(SongLoader.getAllSongs(context))
+        return Observable.from(SongLoader.getAllSongs(context))
+                .filter { it.duration > 1000 * 60 }
+                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
