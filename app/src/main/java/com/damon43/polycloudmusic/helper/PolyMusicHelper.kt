@@ -79,8 +79,9 @@ class PolyMusicHelper {
 
         class ConnectionToken constructor(val mToken: Context)
 
-        fun playAll(mSongsIds: List<Long>?, position: Int, b: Boolean) {
-            mConnection?.open(mSongsIds?.toLongArray(),position,-1,0)
+        fun playAll(mSongsIds: LongArray, position: Int, b: Boolean) {
+
+            mConnection?.open(mSongsIds,position,-1,0)
         }
     }
 }

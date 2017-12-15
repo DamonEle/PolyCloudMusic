@@ -2,6 +2,8 @@ package com.damon43.polycloudmusic.service
 
 import android.app.Service
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.os.IBinder
 import android.provider.MediaStore
 import com.damon43.common.commonutils.LogUtils
@@ -121,6 +123,7 @@ class PolyMusicService : Service() {
     private fun openFile(path: String?) {
 
     }
+
 
     /**
      * 远程服务端实现类 用于服务连接时返回

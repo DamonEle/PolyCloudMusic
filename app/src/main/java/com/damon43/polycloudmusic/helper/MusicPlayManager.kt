@@ -4,6 +4,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.media.MediaPlayer
+import android.net.Uri
 import android.provider.MediaStore
 import com.damon43.common.commonutils.LogUtils
 import com.damon43.polycloudmusic.bean.MusicPlayTrack
@@ -28,24 +29,36 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
     var mMusicCursor: Cursor? = null
     var currentPos = 0
     var mMusicList = mutableListOf<MusicPlayTrack>()
-
+    private val IDCOLIDX = 0
     /**
      * 按队列播放音乐
      */
     fun playAll(list: List<Long>?, position: Int) {
         currentPos = position
         val id = list?.get(position) ?: 0//获取专辑id
-        LogUtils.logD("id:" + id)
-        val url = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                , id) //获取专辑播放路径
-        LogUtils.logD("url:" + url)
+        LogUtils.logD("播放id:"+id)
 
-        mMusicList.add(MusicPlayTrack(id, -1, -1, -1, url.toString()))
-        mMusicCursor = mContext.contentResolver.query(url, PROJECTION, null, null, null)
-        mCurrentMediaPlayer.setDataSource(mContext, url)
+        //获取携带音乐全部信息的游标
+        mMusicCursor = openCursorAndGoToFirst(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                PROJECTION, "_id=" + id, null)
+        val url = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString() + "/" + ((mMusicCursor?.getLong(IDCOLIDX) ?: 1).toString())
+        mMusicList.add(MusicPlayTrack(id, -1, -1, -1, url))
+        LogUtils.logD("播放:"+url)
+        mCurrentMediaPlayer.setDataSource(url)
         mCurrentMediaPlayer.setOnPreparedListener(MusicPlayManager@ this)
         mCurrentMediaPlayer.setOnErrorListener(MusicPlayManager@ this)
         mCurrentMediaPlayer.prepareAsync()
+    }
+
+    private fun openCursorAndGoToFirst(uri: Uri, projection: Array<String>,
+                                       selection: String?, selectionArgs: Array<String>?): Cursor? {
+        val c = mContext.contentResolver.query(uri, projection,
+                selection, selectionArgs, null) ?: return null
+        if (!c.moveToFirst()) {
+            c.close()
+            return null
+        }
+        return c
     }
 
     override fun onCompletion(mp: MediaPlayer?) {

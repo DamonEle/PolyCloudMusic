@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.damon43.common.base.BaseFragment
 import com.damon43.common.commonutils.LogUtils
+import com.damon43.common.commonutils.ToastUtils
 import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.ui.songLibrary.adapter.SongListAdapter
 import com.damon43.polycloudmusic.base.Constant
@@ -61,8 +62,10 @@ class SongListFragment : BaseFragment(), SongListContract.View {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity,
                     permissions, PERMISSIONS_READ_EXTERNAL_STORAGE)
+            ToastUtils.show("申请权限",1000)
         } else {
             mPresenter.loadAllCustomSongs(mContext)
+            ToastUtils.show("权限已经申请",1000)
             LogUtils.logD("load")
         }
     }
@@ -73,8 +76,12 @@ class SongListFragment : BaseFragment(), SongListContract.View {
             PERMISSIONS_READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0) {
                     mPresenter.loadAllCustomSongs(mContext)
+                    ToastUtils.show("权限已经同意",1000)
+
                 } else {
                     //failed...
+                    ToastUtils.show("权限申请被拒绝",1000)
+
                 }
             }
         }

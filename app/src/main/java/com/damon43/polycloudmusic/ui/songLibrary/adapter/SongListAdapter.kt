@@ -24,7 +24,7 @@ class SongListAdapter(context: Context, datas: List<Song>) : BaseRecyclerViewAda
 
     private fun getSongsId() {
         Observable.from(datas)
-                .map { it -> it.albumId }
+                .map { it -> it.id }
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
