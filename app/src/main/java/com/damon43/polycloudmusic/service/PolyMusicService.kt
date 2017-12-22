@@ -117,7 +117,7 @@ class PolyMusicService : Service() {
      */
     private fun open(list: LongArray?, position: Int, sourceId: Long, sourceType: Int) {
 
-        mMusicManager.playAll(list?.toList(),position)
+        mMusicManager.playAll(list,position)
     }
 
     private fun openFile(path: String?) {

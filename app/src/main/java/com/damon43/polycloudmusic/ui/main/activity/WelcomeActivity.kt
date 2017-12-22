@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import com.damon43.common.base.BaseActivity
 import com.damon43.common.commonutils.DensityUtil
-import com.damon43.polycloudmusic.MainActivity
 import com.damon43.polycloudmusic.R
 import kotlinx.android.synthetic.main.activity_welcome.*
 

@@ -2,6 +2,11 @@
 1.跳转
 startActivity(Intent(MainActivity@this, SecondActivity::class.java))
 2.声明属性不立即赋值：lateinit关键字
+3.内部类
+object :  Action1<Any> {
+            override fun call(t: Any?) {
+            }
+        }
 
 style="@style/TextAppearance.AppCompat.Display4"
 style="@style/TextAppearance.AppCompat.Display3"

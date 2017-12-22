@@ -1,26 +1,25 @@
-package com.damon43.polycloudmusic
+package com.damon43.polycloudmusic.ui.main.activity
 
 import android.Manifest
 import android.content.ComponentName
+import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import com.damon43.common.base.BaseActivity
 import com.damon43.common.commonutils.LogUtils
+import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.helper.PolyMusicHelper
+import com.damon43.polycloudmusic.receiver.RemoteServerReceiver
 import com.damon43.polycloudmusic.ui.main.fragment.SongLibraryFragment
 import com.damon43.polycloudmusic.ui.main.fragment.FoldersFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayListFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayQueueFragment
-import com.zhy.m.permission.MPermissions
-import com.zhy.m.permission.PermissionDenied
-import com.zhy.m.permission.PermissionGrant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_left.*
 import org.jetbrains.anko.toast
@@ -31,6 +30,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
     val playListFragment = PlayListFragment()
     val playQueueFragment = PlayQueueFragment()
     val songLibraryFragment = SongLibraryFragment()
+    lateinit var remoteServerReceiver: RemoteServerReceiver
     /*会话*/
     var mToken: PolyMusicHelper.Companion.ConnectionToken? = null
 
@@ -60,6 +60,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
 
         setUpFragment()
         mToken = PolyMusicHelper.bindService(MainActivity@ this, MainActivity@ this)
+        remoteServerReceiver = RemoteServerReceiver()
     }
 
     override fun initPresenter() {}
@@ -100,10 +101,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        PolyMusicHelper.unBindService(mToken)
-    }
     private val PERMISSIONS_READ_EXTERNAL_STORAGE: Int = 100
 
     fun checkPermission() {
@@ -139,4 +136,22 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         super.onResume()
         checkPermission()
     }
+
+    override fun onStart() {
+        super.onStart()
+        val filter = IntentFilter()
+        filter.addAction(Constant.ACTION_MUSIC_START)
+        filter.addAction(Constant.ACTION_MUSIC_PAUSE)
+        filter.addAction(Constant.ACTION_MUSIC_RESTART)
+        filter.addAction(Constant.ACTION_MUSIC_NEXT)
+        filter.addAction(Constant.ACTION_MUSIC_BACK)
+        registerReceiver(remoteServerReceiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PolyMusicHelper.unBindService(mToken)
+        unregisterReceiver(remoteServerReceiver)
+    }
+
 }

@@ -43,7 +43,7 @@ class SongListFragment : BaseFragment(), SongListContract.View {
     }
 
     override fun initPresenter() {
-        mPresenter = SongListPresenter()
+        mPresenter = SongListPresenter(mContext)
         mPresenter.setVM(SongListModel(), SongListFragment@ this)
         checkPermission()
     }

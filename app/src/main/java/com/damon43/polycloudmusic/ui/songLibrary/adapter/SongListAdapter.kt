@@ -37,7 +37,7 @@ class SongListAdapter(context: Context, datas: List<Song>) : BaseRecyclerViewAda
         holder.setText(R.id.tvSongName, t.title)
         holder.setText(R.id.tvSongAuthor, t.artistName)
         holder.itemView.setOnClickListener {
-            PolyMusicHelper.playAll(mSongsIds,holder.position
+            PolyMusicHelper.playAll(mSongsIds!!.toLongArray(),holder.position
         ,false) }
     }
 

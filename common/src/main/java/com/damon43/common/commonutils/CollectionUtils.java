@@ -21,4 +21,10 @@ public class CollectionUtils {
         }
         return false;
     }
+
+    public static long[] getLongArrayFromOld(long[] old) {
+        long[] news = old;
+        return news;
+    }
+
 }
