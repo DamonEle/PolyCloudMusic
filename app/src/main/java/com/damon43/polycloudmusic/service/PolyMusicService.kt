@@ -53,6 +53,7 @@ class PolyMusicService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mMusicManager.over()
     }
 
 

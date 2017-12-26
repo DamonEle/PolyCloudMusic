@@ -14,6 +14,7 @@ import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.ui.songLibrary.adapter.SongListAdapter
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.bean.Song
+import com.damon43.polycloudmusic.event.MusicEvent
 import com.damon43.polycloudmusic.ui.songLibrary.contract.SongListContract
 import com.damon43.polycloudmusic.ui.songLibrary.model.SongListModel
 import com.damon43.polycloudmusic.ui.songLibrary.presenter.SongListPresenter
@@ -25,12 +26,13 @@ import org.jetbrains.anko.find
 
 class SongListFragment : BaseFragment(), SongListContract.View {
 
+
     lateinit var mPresenter: SongListPresenter
     lateinit var rvSongList: RecyclerView
     var songAdapter: SongListAdapter? = null
 
 
-    val permissions = arrayOf( Manifest.permission.READ_EXTERNAL_STORAGE,
+    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     override fun getLayoutResource(): Int = R.layout.fragment_kind_song
@@ -55,6 +57,10 @@ class SongListFragment : BaseFragment(), SongListContract.View {
         }
     }
 
+    override fun showMusicStart(event: MusicEvent?) {
+        songAdapter?.notifyDataSetChanged()
+    }
+
     private val PERMISSIONS_READ_EXTERNAL_STORAGE: Int = 100
 
     fun checkPermission() {
@@ -62,10 +68,10 @@ class SongListFragment : BaseFragment(), SongListContract.View {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity,
                     permissions, PERMISSIONS_READ_EXTERNAL_STORAGE)
-            ToastUtils.show("申请权限",1000)
+            ToastUtils.show("申请权限", 1000)
         } else {
             mPresenter.loadAllCustomSongs(mContext)
-            ToastUtils.show("权限已经申请",1000)
+            ToastUtils.show("权限已经申请", 1000)
             LogUtils.logD("load")
         }
     }
@@ -76,11 +82,11 @@ class SongListFragment : BaseFragment(), SongListContract.View {
             PERMISSIONS_READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0) {
                     mPresenter.loadAllCustomSongs(mContext)
-                    ToastUtils.show("权限已经同意",1000)
+                    ToastUtils.show("权限已经同意", 1000)
 
                 } else {
                     //failed...
-                    ToastUtils.show("权限申请被拒绝",1000)
+                    ToastUtils.show("权限申请被拒绝", 1000)
 
                 }
             }

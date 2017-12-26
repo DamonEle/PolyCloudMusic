@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers
 class SongListAdapter(context: Context, datas: List<Song>) : BaseRecyclerViewAdapter<Song>(context, datas) {
 
     var mSongsIds: List<Long>? = null
-
+    var mCurrentPlayPosition = 0
     init {
         getSongsId()
     }

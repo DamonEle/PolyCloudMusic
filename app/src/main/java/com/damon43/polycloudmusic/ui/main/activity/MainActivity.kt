@@ -11,18 +11,25 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import com.damon43.common.base.BaseActivity
+import com.damon43.common.baserx.RxManager
 import com.damon43.common.commonutils.LogUtils
 import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.base.Constant
+import com.damon43.polycloudmusic.event.MusicEvent
+import com.damon43.polycloudmusic.event.MusicPauseEvent
+import com.damon43.polycloudmusic.event.MusicRestartEvent
+import com.damon43.polycloudmusic.event.MusicStartEvent
 import com.damon43.polycloudmusic.helper.PolyMusicHelper
 import com.damon43.polycloudmusic.receiver.RemoteServerReceiver
 import com.damon43.polycloudmusic.ui.main.fragment.SongLibraryFragment
 import com.damon43.polycloudmusic.ui.main.fragment.FoldersFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayListFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayQueueFragment
+import com.damon43.polycloudmusic.widget.BottomSildeLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_left.*
 import org.jetbrains.anko.toast
+import rx.functions.Action1
 
 class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
 
@@ -31,6 +38,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
     val playQueueFragment = PlayQueueFragment()
     val songLibraryFragment = SongLibraryFragment()
     lateinit var remoteServerReceiver: RemoteServerReceiver
+
     /*会话*/
     var mToken: PolyMusicHelper.Companion.ConnectionToken? = null
 
@@ -61,6 +69,20 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         setUpFragment()
         mToken = PolyMusicHelper.bindService(MainActivity@ this, MainActivity@ this)
         remoteServerReceiver = RemoteServerReceiver()
+
+        rxManager?.on(Constant.ACTION_MUSIC_STATE, Action1<MusicEvent> { t ->
+            when (t) {
+                is MusicStartEvent -> musicStart(t)
+                is MusicPauseEvent -> ivPlay.isChecked = false
+                is MusicRestartEvent -> ivPlay.isChecked = true
+            }
+        })
+    }
+
+    private fun musicStart(t: MusicStartEvent) {
+        tvBottomSongName.text = t.songName
+        tvBottomAuthor.text = t.authorName
+        ivPlay.isChecked = true
     }
 
     override fun initPresenter() {}

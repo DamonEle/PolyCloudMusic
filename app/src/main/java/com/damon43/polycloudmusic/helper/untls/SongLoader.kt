@@ -46,13 +46,13 @@ object SongLoader {
         }
         return context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 arrayOf("_id", "title", "artist", "album", "duration", "track", "artist_id", "album_id"),
-                selectionStatement, params, null);
+                selectionStatement, params, null)
     }
 
     /**
      * 获取音乐的专辑图片 需要专辑id
      */
-    private fun getAlbumArt(context: Context,album_id: Int): String? {
+     fun getAlbumArt(context: Context,album_id: Int): String? {
         val mUriAlbums = "content://media/external/audio/albums"
         val projection = arrayOf("album_art")
         var cur = context.getContentResolver().query(Uri.parse(mUriAlbums + "/" + Integer.toString(album_id)), projection, null, null, null)

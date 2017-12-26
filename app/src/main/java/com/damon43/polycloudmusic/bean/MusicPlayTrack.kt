@@ -6,5 +6,5 @@ import java.text.FieldPosition
  * desc
  * Created by lenovo on 2017/10/19.
  */
-data class MusicPlayTrack(val id: Long = -1, val sourceId: Long = -1, val type: Int = -1, val
-sourcePosition: Int = -1, val url: String = "")
+data class MusicPlayTrack(val id: Long = -1, val albumId: Long = -1, val albumImg: String? = "", val
+title: String = "<null>", val author :String ="<null>",val url: String = "")

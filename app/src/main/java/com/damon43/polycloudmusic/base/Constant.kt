@@ -15,4 +15,10 @@ object Constant {
     const val ACTION_MUSIC_RESTART :String = "ACTION_MUSIC_RESTART"
     const val ACTION_MUSIC_NEXT :String = "ACTION_MUSIC_NEXT"
     const val ACTION_MUSIC_BACK :String = "ACTION_MUSIC_START"
+
+    /*bundle*/
+    const val BUNDLE_KEY_SONG_NAME :String = "BUNDLE_KEY_SONG_NAME"
+    const val BUNDLE_KEY_SONG_AUTHOR :String = "BUNDLE_KEY_SONG_AUTHOR"
+    const val BUNDLE_KEY_SONG_IMG_URL :String = "BUNDLE_KEY_SONG_IMG_URL"
+    const val BUNDLE_KEY_SONG_INFO :String = "BUNDLE_KEY_SONG_INFO"
 }

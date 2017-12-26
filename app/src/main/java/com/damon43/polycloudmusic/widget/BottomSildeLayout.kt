@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.damon43.common.commonutils.DensityUtil
 import com.damon43.polycloudmusic.R
+import com.damon43.polycloudmusic.event.MusicEvent
 import com.damon43.polycloudmusic.theinterface.OnBottomPlayStateListener
 
 /**
@@ -247,4 +248,5 @@ class BottomSildeLayout : LinearLayout {
         super.onDetachedFromWindow()
         releaseVelocityTracker()
     }
+
 }

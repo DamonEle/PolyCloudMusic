@@ -5,6 +5,7 @@ import com.damon43.common.base.BaseModel
 import com.damon43.common.base.BasePresenter
 import com.damon43.common.base.BaseView
 import com.damon43.polycloudmusic.bean.Song
+import com.damon43.polycloudmusic.event.MusicEvent
 import rx.Observable
 
 /**
@@ -19,6 +20,7 @@ abstract class SongListContract {
 
     interface View : BaseView {
         fun showAllCustomSongs(songs: List<Song>)
+        fun showMusicStart(event: MusicEvent?)
     }
 
     abstract class Presenter : BasePresenter<Model, View>() {
