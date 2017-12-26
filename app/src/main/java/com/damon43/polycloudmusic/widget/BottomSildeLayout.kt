@@ -102,7 +102,9 @@ class BottomSildeLayout : LinearLayout {
         mShadowHeight = DensityUtil.dip2px(mContext,5f)
     }
 
-
+    override fun performClick(): Boolean {
+        return super.performClick()
+    }
     override
     fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null && theLayoutParams != null) {

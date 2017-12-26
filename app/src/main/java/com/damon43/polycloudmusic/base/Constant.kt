@@ -18,6 +18,7 @@ object Constant {
 
     /*bundle*/
     const val BUNDLE_KEY_SONG_NAME :String = "BUNDLE_KEY_SONG_NAME"
+    const val BUNDLE_KEY_SONG_ID :String = "BUNDLE_KEY_SONG_ID"
     const val BUNDLE_KEY_SONG_AUTHOR :String = "BUNDLE_KEY_SONG_AUTHOR"
     const val BUNDLE_KEY_SONG_IMG_URL :String = "BUNDLE_KEY_SONG_IMG_URL"
     const val BUNDLE_KEY_SONG_INFO :String = "BUNDLE_KEY_SONG_INFO"

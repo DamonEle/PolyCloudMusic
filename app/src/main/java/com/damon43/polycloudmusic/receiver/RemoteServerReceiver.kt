@@ -21,9 +21,10 @@ class RemoteServerReceiver : BroadcastReceiver() {
         val bundle = intent?.getBundleExtra(Constant.BUNDLE_KEY_SONG_INFO)
         when (intent?.action) {
             Constant.ACTION_MUSIC_START -> {
-                event = MusicStartEvent(Constant.ACTION_MUSIC_START, bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
+                event = MusicStartEvent(Constant.ACTION_MUSIC_START, bundle?.getLong(Constant.
+                        BUNDLE_KEY_SONG_ID) ?: 0, bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
                         , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
-                       ,bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME)?:"")
+                        , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "")
 
             }
             Constant.ACTION_MUSIC_PAUSE -> event = MusicPauseEvent(Constant.ACTION_MUSIC_PAUSE)

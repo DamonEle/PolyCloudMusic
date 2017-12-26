@@ -109,6 +109,7 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
         sendStarted.action = Constant.ACTION_MUSIC_START
         val extra = Bundle()
         extra.putString(Constant.BUNDLE_KEY_SONG_NAME, mCurrentSong.title)
+        extra.putLong(Constant.BUNDLE_KEY_SONG_ID, mCurrentSong.id)
         extra.putString(Constant.BUNDLE_KEY_SONG_AUTHOR, mCurrentSong.author)
         extra.putString(Constant.BUNDLE_KEY_SONG_IMG_URL, mCurrentSong.albumImg)
         sendStarted.putExtra(Constant.BUNDLE_KEY_SONG_INFO, extra)

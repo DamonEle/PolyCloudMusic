@@ -15,6 +15,7 @@ import com.damon43.polycloudmusic.ui.songLibrary.adapter.SongListAdapter
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.bean.Song
 import com.damon43.polycloudmusic.event.MusicEvent
+import com.damon43.polycloudmusic.event.MusicStartEvent
 import com.damon43.polycloudmusic.ui.songLibrary.contract.SongListContract
 import com.damon43.polycloudmusic.ui.songLibrary.model.SongListModel
 import com.damon43.polycloudmusic.ui.songLibrary.presenter.SongListPresenter
@@ -58,7 +59,7 @@ class SongListFragment : BaseFragment(), SongListContract.View {
     }
 
     override fun showMusicStart(event: MusicEvent?) {
-        songAdapter?.notifyDataSetChanged()
+        songAdapter?.notifeCurrentPlay((event as MusicStartEvent))
     }
 
     private val PERMISSIONS_READ_EXTERNAL_STORAGE: Int = 100
