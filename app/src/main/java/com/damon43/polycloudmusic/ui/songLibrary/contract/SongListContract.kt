@@ -21,6 +21,7 @@ abstract class SongListContract {
     interface View : BaseView {
         fun showAllCustomSongs(songs: List<Song>)
         fun showMusicStart(event: MusicEvent?)
+        fun showMusicPause(event: MusicEvent?)
     }
 
     abstract class Presenter : BasePresenter<Model, View>() {

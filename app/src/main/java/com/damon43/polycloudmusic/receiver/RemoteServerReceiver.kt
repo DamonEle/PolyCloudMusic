@@ -8,6 +8,7 @@ import com.damon43.common.baserx.RxBus
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.event.MusicEvent
 import com.damon43.polycloudmusic.event.MusicPauseEvent
+import com.damon43.polycloudmusic.event.MusicRestartEvent
 import com.damon43.polycloudmusic.event.MusicStartEvent
 
 /**
@@ -17,18 +18,19 @@ import com.damon43.polycloudmusic.event.MusicStartEvent
 class RemoteServerReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        var event: MusicEvent = MusicEvent("")
+        var event: MusicEvent = MusicEvent("",0)
         val bundle = intent?.getBundleExtra(Constant.BUNDLE_KEY_SONG_INFO)
+        val id = bundle?.getLong(Constant.
+                BUNDLE_KEY_SONG_ID) ?: 0
         when (intent?.action) {
             Constant.ACTION_MUSIC_START -> {
-                event = MusicStartEvent(Constant.ACTION_MUSIC_START, bundle?.getLong(Constant.
-                        BUNDLE_KEY_SONG_ID) ?: 0, bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
+                event = MusicStartEvent(Constant.ACTION_MUSIC_START, id, bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
                         , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
                         , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "")
 
             }
-            Constant.ACTION_MUSIC_PAUSE -> event = MusicPauseEvent(Constant.ACTION_MUSIC_PAUSE)
-            Constant.ACTION_MUSIC_RESTART -> event = MusicPauseEvent(Constant.ACTION_MUSIC_RESTART)
+            Constant.ACTION_MUSIC_PAUSE -> event = MusicPauseEvent(Constant.ACTION_MUSIC_PAUSE, id)
+            Constant.ACTION_MUSIC_RESTART -> event = MusicRestartEvent(Constant.ACTION_MUSIC_RESTART, id)
         }
         RxBus.getInstance().post(Constant.ACTION_MUSIC_STATE, event)
     }

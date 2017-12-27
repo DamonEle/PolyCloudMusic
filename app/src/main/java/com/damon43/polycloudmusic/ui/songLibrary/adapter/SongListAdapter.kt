@@ -4,7 +4,7 @@ import android.content.Context
 import com.damon43.common.base.BaseRecyclerViewAdapter
 import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.bean.Song
-import com.damon43.polycloudmusic.event.MusicStartEvent
+import com.damon43.polycloudmusic.event.MusicEvent
 import com.damon43.polycloudmusic.helper.PolyMusicHelper
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -37,7 +37,7 @@ class SongListAdapter(context: Context, datas: List<Song>) : BaseRecyclerViewAda
     override fun onBindView(t: Song, holder: BaseViewHolder) {
         val iv = holder.getImageView(R.id.ivItemPlay)
         if (t.id == mCurrentPlaySongId) iv.
-                setImageResource(R.drawable.ic_bottom_play) else iv.
+                setImageResource(R.drawable.ic_bottom_pause) else iv.
                 setImageResource(R.drawable.ic_bottom_play)
         holder.setText(R.id.tvSongName, t.title)
         holder.setText(R.id.tvSongAuthor, t.artistName)
@@ -47,8 +47,8 @@ class SongListAdapter(context: Context, datas: List<Song>) : BaseRecyclerViewAda
         }
     }
 
-    fun notifeCurrentPlay(event:MusicStartEvent) {
-        mCurrentPlaySongId = event.id
+    fun notifeCurrentPlay(id:Long) {
+        mCurrentPlaySongId = id
         notifyDataSetChanged()
     }
 

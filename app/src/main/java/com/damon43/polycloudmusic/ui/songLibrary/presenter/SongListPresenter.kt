@@ -5,6 +5,8 @@ import com.damon43.common.baserx.RxManager
 import com.damon43.polycloudmusic.base.Constant
 import com.damon43.polycloudmusic.bean.Song
 import com.damon43.polycloudmusic.event.MusicEvent
+import com.damon43.polycloudmusic.event.MusicPauseEvent
+import com.damon43.polycloudmusic.event.MusicRestartEvent
 import com.damon43.polycloudmusic.event.MusicStartEvent
 import com.damon43.polycloudmusic.ui.songLibrary.contract.SongListContract
 import rx.Subscriber
@@ -21,8 +23,14 @@ class SongListPresenter(context: Context) : SongListContract.Presenter() {
         rxManager.on(Constant.ACTION_MUSIC_STATE, Action1<MusicEvent> { t ->
             when(t){
                 is MusicStartEvent -> musicStart(t)
+                is MusicRestartEvent -> musicStart(t)
+                is MusicPauseEvent -> musicPause(t)
             }
         })
+    }
+
+    private fun musicPause(t: MusicPauseEvent) {
+        mView.showMusicPause(t)
     }
 
     private fun musicStart(t: MusicEvent?) {

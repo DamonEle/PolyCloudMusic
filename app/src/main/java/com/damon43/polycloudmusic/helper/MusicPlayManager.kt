@@ -31,7 +31,7 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
             MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.ARTIST_ID)
 
-
+    var mCurrentIsPause = false
     var mMusicCursor: Cursor? = null
     var currentPos = 0
     var mMusicList = mutableListOf<MusicPlayTrack>()
@@ -63,16 +63,18 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
         mMusicList.add(music)
         mCurrentSong = music
         LogUtils.logD("播放:" + url)
-        if (mCurrentMediaPlayer.isPlaying) {
-            mCurrentMediaPlayer.pause()
-            mCurrentMediaPlayer = MediaPlayer()
-        }
+        if (mCurrentMediaPlayer.isPlaying) mCurrentMediaPlayer.pause()
+
+
+        mCurrentMediaPlayer = MediaPlayer()
         mCurrentMediaPlayer.setDataSource(url)
         mCurrentMediaPlayer.setOnPreparedListener(MusicPlayManager@ this)
         mCurrentMediaPlayer.setOnErrorListener(MusicPlayManager@ this)
         mCurrentMediaPlayer.prepareAsync()
     } else {
         val sendState = Intent()
+        val extra = Bundle()
+        extra.putLong(Constant.BUNDLE_KEY_SONG_ID, mCurrentSong.id)
         if (mCurrentMediaPlayer.isPlaying) {
             mCurrentMediaPlayer.pause()
             sendState.action = Constant.ACTION_MUSIC_PAUSE
@@ -80,6 +82,7 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
             mCurrentMediaPlayer.start()
             sendState.action = Constant.ACTION_MUSIC_RESTART
         }
+        sendState.putExtra(Constant.BUNDLE_KEY_SONG_INFO, extra)
         mContext.sendBroadcast(sendState)
     }
 
@@ -108,8 +111,9 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
         val sendStarted = Intent()
         sendStarted.action = Constant.ACTION_MUSIC_START
         val extra = Bundle()
-        extra.putString(Constant.BUNDLE_KEY_SONG_NAME, mCurrentSong.title)
         extra.putLong(Constant.BUNDLE_KEY_SONG_ID, mCurrentSong.id)
+
+        extra.putString(Constant.BUNDLE_KEY_SONG_NAME, mCurrentSong.title)
         extra.putString(Constant.BUNDLE_KEY_SONG_AUTHOR, mCurrentSong.author)
         extra.putString(Constant.BUNDLE_KEY_SONG_IMG_URL, mCurrentSong.albumImg)
         sendStarted.putExtra(Constant.BUNDLE_KEY_SONG_INFO, extra)
