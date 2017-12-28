@@ -28,55 +28,63 @@
             android:background="@color/white"
             android:orientation="vertical"
             app:defult_height="60dp">
-
-            <RelativeLayout
-                android:id="@+id/rlPlayLayout"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="@dimen/padding_margin_5dp"
-                android:paddingEnd="@dimen/padding_margin_10dp"
-                android:paddingStart="@dimen/padding_margin_10dp">
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/rlPlayLayout"
+                    android:layout_gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="@dimen/padding_margin_5dp"
+                    android:paddingEnd="@dimen/padding_margin_10dp"
+                    android:paddingStart="@dimen/padding_margin_10dp">
 
-                <ImageView
-                    android:id="@+id/ivBottomSongPic"
-                    android:layout_width="@dimen/padding_margin_55dp"
-                    android:layout_height="@dimen/padding_margin_55dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/padding_margin_10dp"
-                    android:background="@mipmap/ic_launcher"
-                    android:clickable="true" />
+                    <ImageView
+                        android:id="@+id/ivBottomSongPic"
+                        android:layout_width="@dimen/padding_margin_55dp"
+                        android:layout_height="@dimen/padding_margin_55dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/padding_margin_10dp"
+                        android:background="@mipmap/ic_launcher"
+                        android:clickable="true" />
 
-                <TextView
-                    android:id="@+id/tvBottomSongName"
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_margin_5dp"
-                    android:layout_marginTop="@dimen/padding_margin_2dp"
-                    android:layout_toEndOf="@id/ivBottomSongPic"
-                    android:text="@string/app_name"
-                    android:textColor="@color/primary_text" />
+                    <TextView
+                        android:id="@+id/tvBottomSongName"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/padding_margin_5dp"
+                        android:layout_marginTop="@dimen/padding_margin_2dp"
+                        android:layout_toEndOf="@id/ivBottomSongPic"
+                        android:text="@string/app_name"
+                        android:textColor="@color/primary_text" />
 
-                <TextView
-                    android:id="@+id/tvBottomAuthor"
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvBottomSongName"
-                    android:layout_toEndOf="@id/ivBottomSongPic"
-                    android:clickable="true"
-                    android:text="@string/app_name"
-                    android:textColor="@color/secondary_text" />
+                    <TextView
+                        android:id="@+id/tvBottomAuthor"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvBottomSongName"
+                        android:layout_toEndOf="@id/ivBottomSongPic"
+                        android:clickable="true"
+                        android:text="@string/app_name"
+                        android:textColor="@color/secondary_text" />
 
-                <CheckBox
-                    android:id="@+id/ivPlay"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/selector_btn_play" />
-            </RelativeLayout>
+                    <CheckBox
+                        android:id="@+id/ivPlay"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/selector_btn_play" />
+                </RelativeLayout>
+
+
+
+            </FrameLayout>
+
         </com.damon43.polycloudmusic.widget.BottomSildeLayout>
 
         <FrameLayout

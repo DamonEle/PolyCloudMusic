@@ -98,11 +98,11 @@ class PolyMusicService : Service() {
     }
 
     private fun backMusic() {
-
+        mMusicManager.backMusic()
     }
 
     private fun nextMusic() {
-
+        mMusicManager.nextMusic()
     }
 
     private fun stopMusic() {

@@ -83,5 +83,12 @@ class PolyMusicHelper {
 
             mConnection?.open(mSongsIds,position,-1,0)
         }
+
+        fun next(){
+            mConnection?.nextMusic()
+        }
+        fun back(){
+            mConnection?.backMusic()
+        }
     }
 }
