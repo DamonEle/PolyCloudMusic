@@ -87,41 +87,61 @@
                     android:id="@+id/llMoreOper"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/black"
                     android:orientation="vertical"
                     android:paddingTop="?attr/actionBarSize">
 
                     <TextView
                         android:id="@+id/tvMoreOperSongName"
+                        style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:text="@string/app_name" />
 
                     <TextView
                         android:id="@+id/tvMoreOperAuthor"
+                        style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/padding_margin_10dp"
                         android:text="@string/app_name" />
+
+                    <com.damon43.polycloudmusic.widget.ProgressDragView
+                        android:id="@+id/pdView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_margin_10dp"
+                        android:layout_marginEnd="@dimen/padding_margin_55dp"
+                        android:layout_marginStart="@dimen/padding_margin_55dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="@dimen/padding_margin_10dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/btnBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/selector_btn_back" />
 
                         <Button
                             android:id="@+id/btnPlayOrPause"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginEnd="@dimen/padding_margin_25dp"
+                            android:layout_marginStart="@dimen/padding_margin_25dp"
+                            android:background="@drawable/selector_btn_play_2" />
 
                         <Button
                             android:id="@+id/btnNext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/selector_btn_next" />
 
                     </LinearLayout>
                 </LinearLayout>
