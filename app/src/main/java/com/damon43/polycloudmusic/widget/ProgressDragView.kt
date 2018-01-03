@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.damon43.common.commonutils.DensityUtil
 import com.damon43.polycloudmusic.R
@@ -21,8 +22,12 @@ class ProgressDragView : View {
     var mContext: Context
     lateinit var mStartedPaint: Paint
     lateinit var mReadyPaint: Paint
-
+    var pointX = 0f
     var mDrawLineY: Float = 0f
+    var bigCircleRadius = 0f
+    var smallCircleRadius = 0f
+    var mEndLineX = 0f
+    var mStartX = 0f
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -63,14 +68,31 @@ class ProgressDragView : View {
         }
 
         mDrawLineY = mHeight / 2.toFloat()
-
+        bigCircleRadius = mDrawLineY / 2 + 8
+        smallCircleRadius = bigCircleRadius - 5
+        mStartX = bigCircleRadius
+        mEndLineX = mWidth - bigCircleRadius
         setMeasuredDimension(mWidth, mHeight)
     }
 
     override fun onDraw(canvas: Canvas?) {
-        canvas!!.drawLine(0f, mDrawLineY, mWidth / 3.toFloat(), mDrawLineY, mStartedPaint)
-        canvas.drawCircle(mWidth / 3.toFloat(), mDrawLineY, mDrawLineY + 8, mReadyPaint)
-        canvas.drawCircle(mWidth / 3.toFloat(), mDrawLineY, mDrawLineY, mStartedPaint)
-        canvas.drawLine(mWidth / 3.toFloat(), mDrawLineY, mWidth.toFloat(), mDrawLineY, mReadyPaint)
+        canvas!!.drawLine(mStartX, mDrawLineY, pointX, mDrawLineY, mStartedPaint)
+        canvas.drawLine(pointX, mDrawLineY, mEndLineX, mDrawLineY, mReadyPaint)
+        canvas.drawCircle(pointX, mDrawLineY, bigCircleRadius, mReadyPaint)
+        canvas.drawCircle(pointX, mDrawLineY, smallCircleRadius, mStartedPaint)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val action = event!!.action
+        when (action) {
+            MotionEvent.ACTION_DOWN -> performClick()
+            MotionEvent.ACTION_MOVE -> scroll(event.x)
+        }
+        return true
+    }
+
+    fun scroll(x: Float) {
+        pointX = x
+        invalidate()
     }
 }
