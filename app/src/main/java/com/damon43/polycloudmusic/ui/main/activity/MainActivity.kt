@@ -67,8 +67,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         tvPlayQueue.setOnClickListener(MainActivity@ this)
         ivPlay.setOnClickListener(MainActivity@ this)
         bslPlay.heightListener = object : OnBottomPlayStateListener {
-            override fun onChangeDegree(alpha: Int) {
-                rlPlayLayout.alpha = alpha.toFloat()
+            override fun onChangeDegree(alpha: Float) {
+                rlPlayLayout.alpha = alpha
                 LogUtils.logD("alpha:$alpha")
             }
         }

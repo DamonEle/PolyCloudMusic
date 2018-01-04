@@ -40,14 +40,6 @@ class BottomSildeLayout : LinearLayout {
     var speedY: Float = 0f
     var mPointId = 0
     var mMaxVelocity = 0f
-    var spreadHeightLevel1 = 0
-    var spreadHeightLevel2 = 0
-    var spreadHeightLevel3 = 0
-    var spreadHeightLevel4 = 0
-    var spreadHeightLevel5 = 0
-    var spreadHeightLevel6 = 0
-    var spreadHeightLevel7 = 0
-    var spreadHeightLevel8 = 0
 
     /**顶部面板的覆盖阴影*/
     var mAboveShadow: Drawable? = null
@@ -79,23 +71,7 @@ class BottomSildeLayout : LinearLayout {
             theLayoutParams!!.setMargins(theLayoutParams!!.leftMargin,
                     theLayoutParams!!.topMargin, theLayoutParams!!.rightMargin, foldHeight)
 
-            heightInterval = (maxHeight - minHeight) / 8 //  8个级别的透明度
-            spreadHeightLevel1 = -(minHeight + heightInterval)
-            spreadHeightLevel2 = spreadHeightLevel1 - heightInterval
-            spreadHeightLevel3 = spreadHeightLevel2 - heightInterval
-            spreadHeightLevel4 = spreadHeightLevel3 - heightInterval
-            spreadHeightLevel5 = spreadHeightLevel4 - heightInterval
-            spreadHeightLevel6 = spreadHeightLevel5 - heightInterval
-            spreadHeightLevel7 = spreadHeightLevel6 - heightInterval
-            spreadHeightLevel8 = spreadHeightLevel7 - heightInterval
-            LogUtils.logD("spreadHeightLevel1:$spreadHeightLevel1")
-            LogUtils.logD("spreadHeightLevel2:$spreadHeightLevel2")
-            LogUtils.logD("spreadHeightLevel3:$spreadHeightLevel3")
-            LogUtils.logD("spreadHeightLevel4:$spreadHeightLevel4")
-            LogUtils.logD("spreadHeightLevel5:$spreadHeightLevel5")
-            LogUtils.logD("spreadHeightLevel6:$spreadHeightLevel6")
-            LogUtils.logD("spreadHeightLevel7:$spreadHeightLevel7")
-            LogUtils.logD("spreadHeightLevel8:$spreadHeightLevel8")
+
             FOLDED_SIZE = foldHeight / 2
             visibility = View.VISIBLE
             -maxHeight + heightInterval
@@ -135,7 +111,8 @@ class BottomSildeLayout : LinearLayout {
                     if (xOffect in foldHeight..0) {
                         theLayoutParams?.bottomMargin = xOffect
                         layoutParams = theLayoutParams
-                        heightListener?.onChangeDegree()
+                        LogUtils.logD("xOffect!!.div(foldHeight) * 255 = ${(xOffect!!.toFloat()/(foldHeight.toFloat()) * 255).toInt()}")
+                        heightListener?.onChangeDegree(xOffect!!.toFloat()/foldHeight.toFloat())
                     }
                 }
                 MotionEvent.ACTION_UP -> {
@@ -181,16 +158,7 @@ class BottomSildeLayout : LinearLayout {
                 if (size != null) {
                     theLayoutParams!!.bottomMargin = size
                     layoutParams = theLayoutParams
-                    heightListener?.onChangeDegree(when (size) {
-//                        in -maxHeight..spreadHeightLevel7 -> 0
-                        in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
-                        in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
-                        in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
-                        in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
-                        in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
-                        in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
-                        else -> 0
-                    })
+                    heightListener?.onChangeDegree(size!!.toFloat()/foldHeight.toFloat())
                 }
             }
         })
@@ -215,16 +183,7 @@ class BottomSildeLayout : LinearLayout {
                 if (size != null) {
                     theLayoutParams!!.bottomMargin = size
                     layoutParams = theLayoutParams
-                    heightListener?.onChangeDegree(when (size) {
-                        in -maxHeight..spreadHeightLevel7 -> 0
-                        in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
-                        in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
-                        in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
-                        in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
-                        in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
-                        in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
-                        else -> 0
-                    })
+                    heightListener?.onChangeDegree(size!!.toFloat()/foldHeight.toFloat())
                 }
             }
         })
