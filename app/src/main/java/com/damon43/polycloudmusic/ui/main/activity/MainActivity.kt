@@ -21,6 +21,7 @@ import com.damon43.polycloudmusic.event.MusicRestartEvent
 import com.damon43.polycloudmusic.event.MusicStartEvent
 import com.damon43.polycloudmusic.helper.PolyMusicHelper
 import com.damon43.polycloudmusic.receiver.RemoteServerReceiver
+import com.damon43.polycloudmusic.theinterface.OnBottomPlayStateListener
 import com.damon43.polycloudmusic.ui.main.fragment.SongLibraryFragment
 import com.damon43.polycloudmusic.ui.main.fragment.FoldersFragment
 import com.damon43.polycloudmusic.ui.main.fragment.PlayListFragment
@@ -65,6 +66,12 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         tvFolders.setOnClickListener(MainActivity@ this)
         tvPlayQueue.setOnClickListener(MainActivity@ this)
         ivPlay.setOnClickListener(MainActivity@ this)
+        bslPlay.heightListener = object : OnBottomPlayStateListener {
+            override fun onChangeDegree(alpha: Int) {
+                rlPlayLayout.alpha = alpha.toFloat()
+                LogUtils.logD("alpha:$alpha")
+            }
+        }
 
         setUpFragment()
         mToken = PolyMusicHelper.bindService(MainActivity@ this, MainActivity@ this)

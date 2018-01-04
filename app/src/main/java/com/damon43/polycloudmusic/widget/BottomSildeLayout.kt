@@ -11,6 +11,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.damon43.common.commonutils.DensityUtil
+import com.damon43.common.commonutils.LogUtils
 import com.damon43.polycloudmusic.R
 import com.damon43.polycloudmusic.event.MusicEvent
 import com.damon43.polycloudmusic.theinterface.OnBottomPlayStateListener
@@ -70,7 +71,7 @@ class BottomSildeLayout : LinearLayout {
 
     private fun initListener() {
         listener = ViewTreeObserver.OnGlobalLayoutListener {
-            theLayoutParams = getLayoutParams() as
+            theLayoutParams = layoutParams as
                     RelativeLayout.LayoutParams?
             maxHeight = theLayoutParams!!.height
 
@@ -80,12 +81,21 @@ class BottomSildeLayout : LinearLayout {
 
             heightInterval = (maxHeight - minHeight) / 8 //  8个级别的透明度
             spreadHeightLevel1 = -(minHeight + heightInterval)
-            spreadHeightLevel2 = -(spreadHeightLevel1 + heightInterval)
-            spreadHeightLevel3 = -(spreadHeightLevel2 + heightInterval)
-            spreadHeightLevel4 = -(spreadHeightLevel3 + heightInterval)
-            spreadHeightLevel5 = -(spreadHeightLevel4 + heightInterval)
-            spreadHeightLevel6 = -(spreadHeightLevel5 + heightInterval)
-            spreadHeightLevel7 = -(spreadHeightLevel6 + heightInterval)
+            spreadHeightLevel2 = spreadHeightLevel1 - heightInterval
+            spreadHeightLevel3 = spreadHeightLevel2 - heightInterval
+            spreadHeightLevel4 = spreadHeightLevel3 - heightInterval
+            spreadHeightLevel5 = spreadHeightLevel4 - heightInterval
+            spreadHeightLevel6 = spreadHeightLevel5 - heightInterval
+            spreadHeightLevel7 = spreadHeightLevel6 - heightInterval
+            spreadHeightLevel8 = spreadHeightLevel7 - heightInterval
+            LogUtils.logD("spreadHeightLevel1:$spreadHeightLevel1")
+            LogUtils.logD("spreadHeightLevel2:$spreadHeightLevel2")
+            LogUtils.logD("spreadHeightLevel3:$spreadHeightLevel3")
+            LogUtils.logD("spreadHeightLevel4:$spreadHeightLevel4")
+            LogUtils.logD("spreadHeightLevel5:$spreadHeightLevel5")
+            LogUtils.logD("spreadHeightLevel6:$spreadHeightLevel6")
+            LogUtils.logD("spreadHeightLevel7:$spreadHeightLevel7")
+            LogUtils.logD("spreadHeightLevel8:$spreadHeightLevel8")
             FOLDED_SIZE = foldHeight / 2
             visibility = View.VISIBLE
             -maxHeight + heightInterval
@@ -125,16 +135,7 @@ class BottomSildeLayout : LinearLayout {
                     if (xOffect in foldHeight..0) {
                         theLayoutParams?.bottomMargin = xOffect
                         layoutParams = theLayoutParams
-                        heightListener?.onChangeDegree(when (xOffect) {
-                            in -maxHeight..spreadHeightLevel7 -> 0
-                            in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
-                            in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
-                            in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
-                            in spreadHeightLevel4..spreadHeightLevel3 -> alphaInterval * 4
-                            in spreadHeightLevel3..spreadHeightLevel2 -> alphaInterval * 5
-                            in spreadHeightLevel2..spreadHeightLevel1 -> alphaInterval * 6
-                            else -> 0
-                        })
+                        heightListener?.onChangeDegree()
                     }
                 }
                 MotionEvent.ACTION_UP -> {
@@ -181,7 +182,7 @@ class BottomSildeLayout : LinearLayout {
                     theLayoutParams!!.bottomMargin = size
                     layoutParams = theLayoutParams
                     heightListener?.onChangeDegree(when (size) {
-                        in -maxHeight..spreadHeightLevel7 -> 0
+//                        in -maxHeight..spreadHeightLevel7 -> 0
                         in spreadHeightLevel7..spreadHeightLevel6 -> alphaInterval * 1
                         in spreadHeightLevel6..spreadHeightLevel5 -> alphaInterval * 2
                         in spreadHeightLevel5..spreadHeightLevel4 -> alphaInterval * 3
@@ -250,5 +251,6 @@ class BottomSildeLayout : LinearLayout {
         super.onDetachedFromWindow()
         releaseVelocityTracker()
     }
+
 
 }

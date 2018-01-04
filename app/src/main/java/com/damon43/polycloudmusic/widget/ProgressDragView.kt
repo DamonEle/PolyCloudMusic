@@ -72,6 +72,7 @@ class ProgressDragView : View {
         smallCircleRadius = bigCircleRadius - 5
         mStartX = bigCircleRadius
         mEndLineX = mWidth - bigCircleRadius
+        pointX = mStartX
         setMeasuredDimension(mWidth, mHeight)
     }
 
@@ -84,10 +85,11 @@ class ProgressDragView : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val action = event!!.action
-        when (action) {
+        if (event.x in mStartX..mEndLineX) when (action) {
             MotionEvent.ACTION_DOWN -> performClick()
             MotionEvent.ACTION_MOVE -> scroll(event.x)
         }
+
         return true
     }
 
