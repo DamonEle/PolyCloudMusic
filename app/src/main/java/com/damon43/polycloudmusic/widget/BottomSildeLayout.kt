@@ -202,8 +202,8 @@ class BottomSildeLayout : LinearLayout {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        mAboveShadow?.setBounds(left,0,right,mShadowHeight)
-        mAboveShadow?.draw(canvas)
+//        mAboveShadow?.setBounds(left,0,right,mShadowHeight)
+//        mAboveShadow?.draw(canvas)
     }
 
     override fun onDetachedFromWindow() {

@@ -9,12 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.damon43.common.baserx.RxManager;
-import com.damon43.common.commonutils.ClassUtil;
 import com.damon43.common.commonutils.LogUtils;
-import com.zhy.m.permission.MPermissions;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author damonmasty
