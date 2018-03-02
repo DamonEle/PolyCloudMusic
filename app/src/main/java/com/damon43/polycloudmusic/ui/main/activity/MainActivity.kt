@@ -86,10 +86,17 @@ class MainActivity : BaseActivity(), View.OnClickListener, ServiceConnection {
         })
     }
 
+    /**
+     * 播放开始 更新ui
+     */
     private fun musicStart(t: MusicStartEvent) {
         tvBottomSongName.text = t.songName
         tvBottomAuthor.text = t.authorName
+        tvMoreOperAuthor.text = t.authorName
+        tvMoreOperSongName.text = t.songName
+        LogUtils.logD("imgUrl:${t.albumImg}")
         ivPlay.isChecked = true
+        btnPlayOrPause.isChecked = true
     }
 
     override fun initPresenter() {}

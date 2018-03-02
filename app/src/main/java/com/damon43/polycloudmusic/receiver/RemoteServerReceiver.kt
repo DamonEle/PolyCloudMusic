@@ -25,8 +25,8 @@ class RemoteServerReceiver : BroadcastReceiver() {
         when (intent?.action) {
             Constant.ACTION_MUSIC_START -> {
                 event = MusicStartEvent(Constant.ACTION_MUSIC_START, id, bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
-                        , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "null"
-                        , bundle?.getString(Constant.BUNDLE_KEY_SONG_NAME) ?: "")
+                        , bundle?.getString(Constant.BUNDLE_KEY_SONG_AUTHOR) ?: "null"
+                        , bundle?.getString(Constant.BUNDLE_KEY_SONG_IMG_URL) ?: "")
 
             }
             Constant.ACTION_MUSIC_PAUSE -> event = MusicPauseEvent(Constant.ACTION_MUSIC_PAUSE, id)

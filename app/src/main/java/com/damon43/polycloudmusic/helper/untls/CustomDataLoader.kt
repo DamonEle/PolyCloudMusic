@@ -7,7 +7,7 @@ import android.net.Uri
  * desc
  * Created by lenovo on 2017/10/17.
  */
- object CustomDataLoader {
+object CustomDataLoader {
 
     /**
      * 根据专辑id来获得专辑图片
@@ -15,4 +15,5 @@ import android.net.Uri
     fun getAlbumArtUri(albumId: Long): Uri {
         return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId)
     }
+
 }

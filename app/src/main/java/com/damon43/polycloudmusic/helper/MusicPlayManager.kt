@@ -131,7 +131,7 @@ class MusicPlayManager(var mContext: Context) : MediaPlayer.OnPreparedListener, 
         extra.putLong(Constant.BUNDLE_KEY_SONG_ID, mCurrentSong.id)
         extra.putString(Constant.BUNDLE_KEY_SONG_NAME, mCurrentSong.title)
         extra.putString(Constant.BUNDLE_KEY_SONG_AUTHOR, mCurrentSong.author)
-        extra.putString(Constant.BUNDLE_KEY_SONG_IMG_URL, mCurrentSong.albumImg)
+        extra.putString(Constant.BUNDLE_KEY_SONG_IMG_URL, mCurrentSong.url)
         sendStarted.putExtra(Constant.BUNDLE_KEY_SONG_INFO, extra)
 
         mContext.sendBroadcast(sendStarted)

@@ -128,9 +128,10 @@
                             android:layout_height="40dp"
                             android:background="@drawable/selector_btn_back" />
 
-                        <Button
+                        <CheckBox
                             android:id="@+id/btnPlayOrPause"
                             android:layout_width="60dp"
+                            android:button="@android:color/transparent"
                             android:layout_height="60dp"
                             android:layout_marginEnd="@dimen/padding_margin_25dp"
                             android:layout_marginStart="@dimen/padding_margin_25dp"
